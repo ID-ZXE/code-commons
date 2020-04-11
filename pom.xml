@@ -5,15 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.hang</groupId>
     <artifactId>code-commons</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>basic-api</module>
-        <module>mq</module>
-        <module>zookeeper</module>
+        <module>queue</module>
+        <module>register</module>
         <module>algorithm</module>
         <module>data</module>
+        <module>cache</module>
     </modules>
 
     <properties>

@@ -3,6 +3,7 @@
 ### 代码模块说明
 - **algorithm:** 数据结构与算法
 - **basic-api:** java8,guava,apache-commons相关API   
-- **data:** MapReduce,HDFS,Flink相关API  
-- **mq:** Kafka,RocketMQ相关API
-- **zookeeper:** Zookeeper的API
+- **data:** MapReduce,HDFS,HBase,Flink相关API
+- **cache:** Redis相关API  
+- **queue:** Kafka,RocketMQ相关API
+- **register:** Zookeeper相关API
