@@ -1,0 +1,41 @@
+对jdk的补充
+
+jdk中map只提供一对一的关系,一些场景下需要一对多的关系
+map只提供key查询value,有些场景下我们需要反查
+UnmodifiableXXX存在问题
+
+Lists
+    reverse
+    transform
+    partition
+
+Sets
+    filter
+    intersection 交集
+    union 并集
+    difference 差集
+    powerSet 幂集
+    cartesianProduct 笛卡尔集
+
+Maps
+    filterKeys filterValues filterEntries
+    transformValues transformVEntries 变形成另外一个Map
+    fromProperties 从properties文件中构建一个map,且不可修改
+    uniqueIndex 根据Value构建一个map
+
+Interators
+    concat
+    filter
+    getLast
+
+Multiset:允许出现重复元素,但是元素之间不存在顺序
+    常用方法: count
+
+Mutimap:提供一对多的对应关系
+    ListMutimap
+    SetMutimap
+    HashMutimap
+
+BiMap:key和value必须要保证唯一性
+    BiMap.get:通过key查询value
+    BiMap.inverse.get:通过value查询key
