@@ -3,7 +3,7 @@ package com.github.apache.commons.codec;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
- * @author ZhangHang
+ * @author plum-wine
  * @date 2018-01-30 13:18
  * *****************
  * function:
