@@ -16,7 +16,8 @@
         <module>data</module>
         <module>cache</module>
         <module>design-pattern</module>
-        <module>net</module>
+        <module>network</module>
+        <module>data-structure</module>
     </modules>
 
     <properties>
