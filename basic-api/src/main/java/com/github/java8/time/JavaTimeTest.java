@@ -1,4 +1,4 @@
-package com.github.time;
+package com.github.java8.time;
 
 import org.junit.Test;
 

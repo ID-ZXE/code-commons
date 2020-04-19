@@ -1,0 +1,45 @@
+创建CompletableFuture对象
+    public static CompletableFuture<Void>   runAsync(Runnable runnable)
+    public static CompletableFuture<Void>   runAsync(Runnable runnable, Executor executor)
+    public static <U> CompletableFuture<U>  supplyAsync(Supplier<U> supplier)
+    public static <U> CompletableFuture<U>  supplyAsync(Supplier<U> supplier, Executor executor)
+
+    Asynsc表示异步,而supplyAsync与runAsync不同在与前者异步返回一个结果,后者是void.
+    第二个函数第二个参数表示是用我们自己创建的线程池,否则采用默认的ForkJoinPool.commonPool()作为它的线程池.
+    其中Supplier是一个函数式接口,代表是一个生成者的意思,传入0个参数,返回一个结果
+
+主动计算
+    //同步获取结果
+    public T    get()
+    public T    get(long timeout, TimeUnit unit)
+    public T    getNow(T valueIfAbsent)
+    public T    join()
+    //主动触发计算
+    public boolean complete(T  value)
+    //异常完成
+    public boolean completeExceptionally(Throwable ex)
+
+计算结果完成时的处理
+    public CompletableFuture<T>     whenComplete(BiConsumer<? super T,? super Throwable> action)
+    public CompletableFuture<T>     whenCompleteAsync(BiConsumer<? super T,? super Throwable> action)
+    public CompletableFuture<T>     whenCompleteAsync(BiConsumer<? super T,? super Throwable> action, Executor executor)
+    public CompletableFuture<T>     exceptionally(Function<Throwable,? extends T> fn)
+
+    handle
+    public <U> CompletableFuture<U>     handle(BiFunction<? super T,Throwable,? extends U> fn)
+    public <U> CompletableFuture<U>     handleAsync(BiFunction<? super T,Throwable,? extends U> fn)
+    public <U> CompletableFuture<U>     handleAsync(BiFunction<? super T,Throwable,? extends U> fn, Executor executor)
+
+CompletableFuture的组合
+    thenApply
+    public <U> CompletableFuture<U>     thenApply(Function<? super T,? extends U> fn)
+    public <U> CompletableFuture<U>     thenApplyAsync(Function<? super T,? extends U> fn)
+    public <U> CompletableFuture<U>     thenApplyAsync(Function<? super T,? extends U> fn, Executor executor)
+
+CompletableFuture的Consumer
+    public CompletableFuture<Void>  thenAccept(Consumer<? super T> action)
+    public CompletableFuture<Void>  thenAcceptAsync(Consumer<? super T> action)
+    public CompletableFuture<Void>  thenAcceptAsync(Consumer<? super T> action, Executor executor)
+
+Either和ALL
+    thenAcceptBoth是当两个CompletableFuture都计算完成，而我们下面要了解的方法applyToEither是当任意一个CompletableFuture计算完成的时候就会执行

@@ -1,4 +1,4 @@
-package com.github.lambda;
+package com.github.java8.optional;
 
 import java.util.Optional;
 
