@@ -25,7 +25,7 @@ public class EchoServer {
     }
 
     public static void main(String[] args) throws Exception {
-        new com.hang.echo.EchoServer(8090).start();
+        new EchoServer(8090).start();
     }
 
     public void start() throws Exception {
