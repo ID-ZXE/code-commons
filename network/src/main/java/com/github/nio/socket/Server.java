@@ -41,9 +41,12 @@ public class Server implements Runnable {
     public void init() {
         try {
             selector = Selector.open();
+            // 1. 获取通道
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
+            // 2. 绑定连接
             serverSocketChannel.bind(new InetSocketAddress(8888));
+            // 3. 初始时监听accept事件
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,6 +106,7 @@ public class Server implements Runnable {
             SocketChannel channel = (SocketChannel) key.channel();
             System.out.println("put message to client");
             String str = scanner.nextLine();
+            // 发送反馈
             wirteBuffer.put(str.getBytes());
             wirteBuffer.flip();
             channel.write(wirteBuffer);
@@ -116,6 +120,7 @@ public class Server implements Runnable {
     public void accept(SelectionKey key) {
         try {
             ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
+            // 在非阻塞模式下,accept方法会立刻返回,无连接时将返回null
             SocketChannel channel = serverChannel.accept();
             // 设置为非阻塞
             channel.configureBlocking(false);

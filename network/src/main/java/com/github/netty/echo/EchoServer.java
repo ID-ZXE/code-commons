@@ -29,7 +29,6 @@ public class EchoServer {
     }
 
     public void start() throws Exception {
-        final EchoServerHandler echoServerHandler = new EchoServerHandler();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -39,7 +38,10 @@ public class EchoServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(echoServerHandler);
+                            // 此处的handler如果不new的话,第二次会抛出ChannelPipelineException异常 is not a @Sharable handler, so can't be added or removed multiple times.
+                            // 除非handler被标记为@Sharable
+                            socketChannel.pipeline().addFirst(new EchoServerInHandler());
+                            socketChannel.pipeline().addFirst(new EchoServerOutHandler());
                         }
                     });
             // 异步绑定服务器 并且阻塞等待绑定完成

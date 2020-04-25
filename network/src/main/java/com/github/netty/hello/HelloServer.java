@@ -2,6 +2,7 @@ package com.github.netty.hello;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -33,13 +34,22 @@ public class HelloServer {
 
             // 绑定端口 启动server 启动方式为同步
             ChannelFuture channelFuture = serverBootstrap.bind(8088).sync();
+            channelFuture.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if(channelFuture.isSuccess()) {
+                        System.out.println("start success");
+                    }
+                }
+            });
             // 监听关闭的channel 设置为同步方式
+            // 一直阻塞 直到服务器Channel关闭
             channelFuture.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-
+        System.out.println("end");
     }
 
 }

@@ -13,6 +13,9 @@ import io.netty.handler.codec.http.HttpServerCodec;
  */
 public class HelloServerInitializer extends ChannelInitializer<SocketChannel> {
 
+    /**
+     * channel之间使用ChannelHandlerContext交互
+     */
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         // 通过SocketChannel去获取相应的管道

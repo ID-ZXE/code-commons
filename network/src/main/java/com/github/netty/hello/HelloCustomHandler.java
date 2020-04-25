@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
@@ -67,8 +68,15 @@ public class HelloCustomHandler extends SimpleChannelInboundHandler<HttpObject> 
         System.out.println("助手类移除");
     }
 
+    /**
+     * 如果客户端发送了5字节,服务端不能保证5字节能被一次性接收
+     * @param channelHandlerContext
+     * @param httpObject
+     * @throws Exception
+     */
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
+
         // 获取channel
         Channel channel = channelHandlerContext.channel();
         if (httpObject instanceof HttpRequest) {
