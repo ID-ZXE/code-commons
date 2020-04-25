@@ -31,8 +31,12 @@ public class Server {
             protected void initChannel(SocketChannel ch) {
                 // 拆解long类型的数据包
                 ch.pipeline().addLast(new FixedLengthFrameDecoder(Long.BYTES));
+                // 由netty工作线程完成
+                ch.pipeline().addLast(ServerBusinessHandler.INSTANCE);
+                // 由netty业务线程完成
                 // ch.pipeline().addLast(businessGroup, ServerBusinessHandler.INSTANCE);
-                ch.pipeline().addLast(ServerBusinessThreadPoolHandler.INSTANCE);
+                // 自定义业务线程
+                // ch.pipeline().addLast(ServerBusinessThreadPoolHandler.INSTANCE);
             }
         });
 

@@ -34,7 +34,7 @@ public class Client {
         });
 
         // 建立1千个连接
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 1000; i++) {
             bootstrap.connect(SERVER_HOST, port).get();
         }
     }
