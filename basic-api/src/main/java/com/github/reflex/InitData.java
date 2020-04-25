@@ -19,15 +19,13 @@ import java.util.jar.JarFile;
  */
 public class InitData {
 
-    private static final ConcurrentMap<Class, Object> map = new ConcurrentHashMap<Class, Object>();
+    private static final ConcurrentMap<Class<?>, Object> map = new ConcurrentHashMap<>();
 
     /**
      * 构造方法传入packageName
      * 加载指定包下的所有数据对象
      * 将dir传入数据对象，创建数据对象
      * 将数据对象放入CurrentHashMap中
-     *
-     * @param packageName
      */
     public InitData(String packageName) {
         try {
@@ -45,9 +43,6 @@ public class InitData {
 
     /**
      * 追加指定的class
-     *
-     * @param path
-     * @param classes
      */
     public static void bachNewInstance(String path, Class... classes) {
         if (StringUtils.isBlank(path) || classes.length <= 0) {
@@ -79,10 +74,6 @@ public class InitData {
 
     /**
      * 获取某包下所有类
-     *
-     * @param packageName  包名
-     * @param childPackage 是否遍历子包
-     * @return 类的完整名称
      */
     public static List<String> getClassName(String packageName, boolean childPackage) {
         List<String> fileNames = null;
@@ -194,7 +185,7 @@ public class InitData {
      * @return 类的完整名称
      */
     private static List<String> getClassNameByJars(URL[] urls, String packagePath, boolean childPackage) {
-        List<String> myClassName = new ArrayList<String>();
+        List<String> myClassName = new ArrayList<>();
         if (urls != null) {
             for (int i = 0; i < urls.length; i++) {
                 URL url = urls[i];
