@@ -7,6 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.AttributeKey;
 
 import java.net.InetSocketAddress;
 
@@ -35,6 +36,7 @@ public class EchoServer {
             bootstrap.group(bossGroup)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
+                    .attr(AttributeKey.newInstance("key"), "value")
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {

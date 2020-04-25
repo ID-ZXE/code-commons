@@ -20,14 +20,12 @@ public class EchoServerInHandler extends ChannelInboundHandlerAdapter {
 
         in.release();
         ctx.write(msg);
-        // ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
-
-        // 将未决消息冲刷到远程节点
+        // 将消息冲刷到远程节点
         // ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
         // ctx.writeAndFlush(Unpooled.EMPTY_BUFFER);
     }
