@@ -1,7 +1,7 @@
 package com.github.java8.lambda.collect;
 
-import com.ccsu.lambda.a_demo.DealDishByLambdaTest;
-import com.ccsu.lambda.a_demo.Dish;
+import com.github.java8.lambda.hello.DealDishByLambdaTest;
+import com.github.java8.lambda.hello.Dish;
 import org.junit.Test;
 
 import java.util.*;
