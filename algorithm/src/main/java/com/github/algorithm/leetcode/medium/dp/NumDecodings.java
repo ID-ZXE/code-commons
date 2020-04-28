@@ -1,4 +1,4 @@
-package com.github.algorithm.leetcode.easy.dp;
+package com.github.algorithm.leetcode.medium.dp;
 
 /**
  * @author hangs.zhang
