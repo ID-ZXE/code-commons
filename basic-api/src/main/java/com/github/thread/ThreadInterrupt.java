@@ -9,12 +9,9 @@ package com.github.thread;
 public class ThreadInterrupt {
 
     public static void main(String[] args) throws InterruptedException {
-        /// testInterrupt();
-
-        /// testInterrupt2();
-
-        /// testInterrupt3();
-
+        // testInterrupt();
+        // testInterrupt2();
+        // testInterrupt3();
         testInterrupt4();
     }
 

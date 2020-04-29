@@ -1,7 +1,7 @@
 package com.github.thread;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author hangs.zhang
@@ -14,7 +14,14 @@ import java.util.concurrent.Executors;
 public class ExecutorTest {
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        // ExecutorService executorService = Executors.newCachedThreadPool();
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
+        // 动态设置线程池的参数
+        executor.setCorePoolSize(200);
+        executor.setMaximumPoolSize(300);
+        // 监控线程池的参数
+        System.out.println("coreSize:" + executor.getCorePoolSize());
+        System.out.println("activeCount:" + executor.getActiveCount());
 
         /// executorService.submit()
         /// executorService.invokeAll()
