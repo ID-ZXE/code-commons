@@ -1,5 +1,8 @@
 package com.github.thread;
 
+import org.junit.Test;
+
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -10,8 +13,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class LockTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void testNewCondition() {
         ReentrantLock lock = new ReentrantLock();
+        Condition condition1 = lock.newCondition();
+        Condition condition2 = lock.newCondition();
+        System.out.println(condition1 == condition2);
     }
 
 }

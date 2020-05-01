@@ -9,3 +9,5 @@
 - **queue:** Kafka,RocketMQ相关API
 - **register:** Zookeeper相关API
 - **network:** 网络编程,bio,nio,aio,netty相关API
+- **java-ee:** java-ee基础API
+- **design-pattern:** java-ee基础API
