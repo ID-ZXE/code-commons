@@ -1,6 +1,5 @@
 package com.github.netty.hello;
 
-import com.sun.deploy.net.HttpRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
