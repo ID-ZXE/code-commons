@@ -20,7 +20,7 @@ public class ThreadInterrupt {
     public void testInterrupt1() throws InterruptedException {
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(10000L);
+                Thread.sleep(2000L);
             } catch (InterruptedException e) {
                 // 通过InterruptedException异常响应中断
                 // 这里的state会输出为false,thread响应之后会将标志位清零
@@ -31,6 +31,7 @@ public class ThreadInterrupt {
         Thread.sleep(1000L);
         // 中断线程
         thread.interrupt();
+        Thread.sleep(3000L);
     }
 
     /**
