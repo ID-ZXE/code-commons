@@ -1,8 +1,14 @@
 package com.github.annotation;
 
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -13,21 +19,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-
 /**
  * @author plum-wine
  */
 public final class AnnoManageUtil {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     public static List<Class<?>> getPackageController(String packageName, Class<? extends Annotation> annotation) throws IOException, ClassNotFoundException {
+        Preconditions.checkArgument(StringUtils.isNotBlank(packageName), "package不能为空");
         List<Class<?>> classList = new ArrayList<>();
         String packageDirName = packageName.replace('.', '/');
         Enumeration<URL> dirs = null;
-        //获取当前目录下面的所有的子目录的url
+        // 获取当前目录下面的所有的子目录的url
         try {
             dirs = Thread.currentThread().getContextClassLoader().getResources(packageDirName);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("io error", e);
         }
         if (dirs != null) {
             while (dirs.hasMoreElements()) {
@@ -67,7 +75,7 @@ public final class AnnoManageUtil {
     }
 
     public static void getRequestMappingMethod(List<Class<?>> classList, Map<String, ExecutorBean> mapp) {
-        for (Class classes : classList) {
+        for (Class<?> classes : classList) {
             // 得到该类下面的所有方法
             Method[] methods = classes.getDeclaredMethods();
             for (Method method : methods) {
@@ -77,9 +85,7 @@ public final class AnnoManageUtil {
                     ExecutorBean executorBean = new ExecutorBean();
                     try {
                         executorBean.setObject(classes.newInstance());
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
+                    } catch (InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
                     executorBean.setMethod(method);
@@ -89,22 +95,19 @@ public final class AnnoManageUtil {
         }
     }
 
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        List<Class<?>> classesList = null;
+        List<Class<?>> classesList;
         classesList = AnnoManageUtil.getPackageController("com.github.annotation", Controller.class);
         Map<String, ExecutorBean> map = new HashMap<>();
         AnnoManageUtil.getRequestMappingMethod(classesList, map);
         map.forEach((k, v) ->
-                System.out.println(k)
+                LOGGER.info(k)
         );
         ExecutorBean bean = map.get("/test1");
         try {
             bean.getMethod().invoke(bean.getObject());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            LOGGER.error("error", e);
         }
     }
 

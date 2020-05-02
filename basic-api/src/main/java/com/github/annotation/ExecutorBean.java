@@ -1,5 +1,7 @@
 package com.github.annotation;
 
+import lombok.Data;
+
 import java.lang.reflect.Method;
 
 /**
@@ -8,25 +10,11 @@ import java.lang.reflect.Method;
  * *********************
  * function:
  */
+@Data
 public class ExecutorBean {
+
     private Object object;
 
     private Method method;
-
-    public Object getObject() {
-        return object;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
 
 }

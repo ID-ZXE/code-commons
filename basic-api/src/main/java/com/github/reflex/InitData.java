@@ -2,8 +2,11 @@ package com.github.reflex;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -19,6 +22,8 @@ import java.util.jar.JarFile;
  */
 public class InitData {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private static final ConcurrentMap<Class<?>, Object> map = new ConcurrentHashMap<>();
 
     /**
@@ -32,23 +37,23 @@ public class InitData {
             String dir = "dir";
             List<String> clsNames = getClassName(packageName, false);
             for (String className : clsNames) {
-                System.out.println(className);
-                Class cls = Class.forName(className);
+                LOGGER.info(className);
+                Class<?> cls = Class.forName(className);
                 newInstance(cls, dir);
             }
         } catch (Exception e) {
-            System.out.println("InitData all error!");
+            LOGGER.info("InitData all error!");
         }
     }
 
     /**
      * 追加指定的class
      */
-    public static void bachNewInstance(String path, Class... classes) {
+    public static void bachNewInstance(String path, Class<?>... classes) {
         if (StringUtils.isBlank(path) || classes.length <= 0) {
             return;
         }
-        for (Class cls : classes) {
+        for (Class<?> cls : classes) {
             newInstance(cls, path);
         }
     }
@@ -58,13 +63,13 @@ public class InitData {
         try {
             if (ob == null) {
                 // 获取非public构造器
-                Constructor constructor = type.getDeclaredConstructor(String.class);
+                Constructor<?> constructor = type.getDeclaredConstructor(String.class);
                 constructor.setAccessible(true);
                 ob = constructor.newInstance(param);
                 map.put(type, ob);
             }
         } catch (Exception e) {
-            System.out.println("InitData newInstance error");
+            LOGGER.info("InitData newInstance error");
         }
     }
 
@@ -171,7 +176,7 @@ public class InitData {
                 }
             }
         } catch (Exception e) {
-            System.out.println("getClassNameByJar error");
+            LOGGER.info("getClassNameByJar error");
         }
         return myClassName;
     }
@@ -187,8 +192,7 @@ public class InitData {
     private static List<String> getClassNameByJars(URL[] urls, String packagePath, boolean childPackage) {
         List<String> myClassName = new ArrayList<>();
         if (urls != null) {
-            for (int i = 0; i < urls.length; i++) {
-                URL url = urls[i];
+            for (URL url : urls) {
                 String urlPath = url.getPath();
                 // 不必搜索classes文件夹
                 if (urlPath.endsWith("classes/")) {
