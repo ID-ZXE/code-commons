@@ -48,7 +48,6 @@ public final class AnnoManageUtil {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    filePath = filePath.substring(1);
                     getFilePathClasses(packageName, filePath, classList, annotation);
                 }
             }
