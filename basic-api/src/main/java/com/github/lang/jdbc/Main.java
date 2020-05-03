@@ -1,4 +1,4 @@
-package com.github.jdbc;
+package com.github.lang.jdbc;
 
 /**
  * @author hangs.zhang

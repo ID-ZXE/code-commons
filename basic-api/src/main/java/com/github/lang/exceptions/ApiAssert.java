@@ -1,4 +1,4 @@
-package com.github.exceptions;
+package com.github.lang.exceptions;
 
 import org.apache.commons.lang3.StringUtils;
 

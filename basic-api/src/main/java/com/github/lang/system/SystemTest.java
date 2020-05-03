@@ -1,4 +1,4 @@
-package com.github.system;
+package com.github.lang.system;
 
 import org.junit.Test;
 

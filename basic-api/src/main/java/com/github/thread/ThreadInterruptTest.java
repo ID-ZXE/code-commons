@@ -12,7 +12,7 @@ import java.lang.invoke.MethodHandles;
  * *********************
  * function:
  */
-public class ThreadInterrupt {
+public class ThreadInterruptTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

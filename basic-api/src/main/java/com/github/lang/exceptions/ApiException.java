@@ -1,4 +1,6 @@
-package com.github.exceptions;
+package com.github.lang.exceptions;
+
+import lombok.Getter;
 
 /**
  * @author hangs.zhang
@@ -6,13 +8,10 @@ package com.github.exceptions;
  * *****************
  * function:
  */
+@Getter
 public class ApiException extends RuntimeException {
 
     private Integer code;
-
-    public Integer getCode() {
-        return code;
-    }
 
     public ApiException(Integer code, String message) {
         super(message);
