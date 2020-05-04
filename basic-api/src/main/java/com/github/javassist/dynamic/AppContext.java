@@ -8,7 +8,7 @@ import java.util.Map;
  * @author hangs.zhang
  * @date 2020/05/04 18:42
  * *****************
- * function:
+ * function: mock applictionContext
  */
 public class AppContext {
 

@@ -1,6 +1,7 @@
-package com.github.javassist.dynamic;
+package com.github.javassist;
 
 
+import com.github.javassist.dynamic.*;
 import com.github.javassist.dynamic.service.HelloService;
 import com.github.javassist.dynamic.service.IHelloService;
 import com.github.javassist.dynamic.service.Person;
@@ -29,15 +30,10 @@ public class DynamicInvokerTest {
 
 		Map<String, RpcMethodConfig> rpcMethodConfigMap = Maps.newHashMap();
 		RpcMethodConfig sayHelloMethod = new RpcMethodConfig();
-		sayHelloMethod.setRelativeId(1);
 		rpcMethodConfigMap.put("sayHelloMethod", sayHelloMethod);
-
 		RpcMethodConfig doProcessMethod = new RpcMethodConfig();
-		doProcessMethod.setRelativeId(2);
 		rpcMethodConfigMap.put("doProcessMethod", doProcessMethod);
-
 		RpcMethodConfig setPersonMethod = new RpcMethodConfig();
-		setPersonMethod.setRelativeId(3);
 		rpcMethodConfigMap.put("setPersonMethod", setPersonMethod);
 
 		RpcServiceConfig rpcServiceConfig = new RpcServiceConfig();

@@ -15,6 +15,12 @@ public class JavassistMaker {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	private static final String NEW_LINE = "\n";
+
+	private static final String BLANK = "\t";
+
+	private static final String BLANK2 = "\t\t";
+
 	private final Map<String, String> typeMap = new HashMap<>();
 
 	public JavassistMaker() {
@@ -27,56 +33,57 @@ public class JavassistMaker {
 		this.typeMap.put("double", "java.lang.Double");
 	}
 
-	public void makeDynamicInvoker(RpcContext rpcContext, RpcServiceConfig sc) throws Exception {
+	public void makeDynamicInvoker(RpcContext rpcContext, RpcServiceConfig serviceConfig) throws Exception {
 		ClassPool clsPool = ClassPool.getDefault();
-		this.makeDynamicInvoker(rpcContext, sc, clsPool);
+		this.makeDynamicInvoker(rpcContext, serviceConfig, clsPool);
 	}
 
-	protected void makeDynamicInvoker(RpcContext rpcContext, RpcServiceConfig sc, ClassPool clsPool) throws Exception {
+	protected void makeDynamicInvoker(RpcContext rpcContext, RpcServiceConfig serviceConfig, ClassPool classPool) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Proxy$").append(sc.getRef());
+		sb.append("Proxy$").append(serviceConfig.getRef());
 		String clsName = sb.toString();
 		LOGGER.info("Creating service proxy class {}", clsName);
 
 		sb.setLength(0);
-		sb.append(sc.getInterfaceClazz().getPackage().getName()).append(".").append(clsName);
-		CtClass ctCls = clsPool.makeClass(sb.toString());
-		ctCls.addInterface(clsPool.getCtClass("com.github.javassist.rpc.DynamicInvoker"));
-
-		ctCls.addField(CtField.make("private Object serviceBean;\n", ctCls));
+		sb.append(serviceConfig.getInterfaceClazz().getPackage().getName()).append(".").append(clsName);
+		CtClass ctCls = classPool.makeClass(sb.toString());
+		// 接口设置
+		ctCls.addInterface(classPool.getCtClass("com.github.javassist.dynamic.DynamicInvoker"));
+		// service
+		ctCls.addField(CtField.make("private Object serviceBean;" + NEW_LINE, ctCls));
+		// 注入上下文
 		ctCls.addField(CtField.make("private " + AppContext.class.getName() + " ctx;", ctCls));
 		sb.setLength(0);
-		sb.append("public void setApplicationContext(").append(AppContext.class.getName()).append(" ctx) {\n");
-		sb.append("    this.ctx = ctx;\n");
+		sb.append("public void setApplicationContext(").append(AppContext.class.getName()).append(" ctx) {").append(NEW_LINE);
+		sb.append(BLANK).append("this.ctx = ctx;").append(NEW_LINE);
 		sb.append("}");
 		ctCls.addMethod(CtNewMethod.make(sb.toString(), ctCls));
-
+		// invoke的实现
 		sb.setLength(0);
-		sb.append("public Object invoke(int methodId, Object[] args) throws Throwable {\n");
-
-		sb.append("    if (serviceBean == null) {\n");
-		sb.append("        serviceBean = ctx.getBean(\"").append(sc.getRef()).append("\");\n");
-		sb.append("    }\n");
-
-		sb.append("    ").append(sc.getInterfaceName()).append(" ").append(sc.getRef());
-		sb.append(" = (").append(sc.getInterfaceName()).append(") serviceBean;\n");
-		sb.append("    switch(methodId) {\n");
+		sb.append("public Object invoke(int methodId, Object[] args) throws Throwable {").append(NEW_LINE);
+		sb.append(BLANK).append("if (serviceBean == null) {").append(NEW_LINE);
+		// ref-context
+		sb.append(BLANK2).append("serviceBean = ctx.getBean(\"").append(serviceConfig.getRef()).append("\");").append(NEW_LINE);
+		sb.append(BLANK).append("}").append(NEW_LINE);
+		sb.append(BLANK).append(serviceConfig.getInterfaceName()).append(" ").append(serviceConfig.getRef());
+		sb.append(" = (").append(serviceConfig.getInterfaceName()).append(") serviceBean;").append(NEW_LINE);
+		sb.append(BLANK).append("switch(methodId) {").append(NEW_LINE);
 		List<Integer> idLt = new ArrayList<>();
-		Map<String, RpcMethodConfig> methodConfigMap = sc.getMethodConfigMap();
+		Map<String, RpcMethodConfig> methodConfigMap = serviceConfig.getMethodConfigMap();
 		for (RpcMethodConfig rpcMethodConfig : methodConfigMap.values()) {
 			Integer id = rpcMethodConfig.getRelativeId();
 			idLt.add(id);
 			Method method = rpcContext.getMethod(id);
-			sb.append("    case ").append(id).append(":\n");
+			sb.append(BLANK).append("case ").append(id).append(":").append(NEW_LINE);
 			String rt = method.getReturnType().getName();
 			if ("void".equals(rt)) {
-				sb.append("        ");
+				sb.append(BLANK2);
 			} else if (typeMap.containsKey(rt)) {
-				sb.append("        return ").append(typeMap.get(rt)).append(".valueOf(");
+				sb.append(BLANK2).append("return ").append(typeMap.get(rt)).append(".valueOf(");
 			} else {
-				sb.append("        return ");
+				sb.append(BLANK2).append("return ");
 			}
-			sb.append(sc.getRef()).append(".").append(method.getName()).append("(");
+			sb.append(serviceConfig.getRef()).append(".").append(method.getName()).append("(");
 			Class<?>[] pta = method.getParameterTypes();
 			for (int i = 0; i < pta.length; i++) {
 				String t = pta[i].getName();
@@ -128,29 +135,30 @@ public class JavassistMaker {
 				sb.setLength(sb.length() - 2);
 			}
 			if ("void".equals(rt)) {
-				sb.append(");\n        return null;\n");
+				sb.append(");").append(NEW_LINE).append(BLANK2).append("return null;").append(NEW_LINE);
 			} else if (typeMap.containsKey(rt)) {
-				sb.append("));\n");
+				sb.append("));").append(NEW_LINE);
 			} else {
-				sb.append(");\n");
+				sb.append(");").append(NEW_LINE);
 			}
 		}
-		sb.append("    default:\n");
-		sb.append("        throw new IllegalStateException(");
-		sb.append("\"Unknown method id \".concat(String.valueOf(methodId)));\n");
-		sb.append("    }\n");
-		sb.append("}\n");
+		sb.append(BLANK).append("default:").append(NEW_LINE);
+		sb.append(BLANK2).append("throw new IllegalStateException(");
+		sb.append("\"Unknown method id \".concat(String.valueOf(methodId)));").append(NEW_LINE);
+		sb.append(BLANK).append("}").append(NEW_LINE);
+		sb.append("}").append(NEW_LINE);
 
 		LOGGER.info("\n{}", sb.toString());
 		try {
 			ctCls.addMethod(CtMethod.make(sb.toString(), ctCls));
 		} catch (CannotCompileException e) {
-			LOGGER.error("Can not make invoker for {}", sc, e);
+			LOGGER.error("Can not make invoker for {}", serviceConfig, e);
 			return;
 		}
+		// 设置context
 		DynamicInvoker invoker = (DynamicInvoker) ctCls.toClass().newInstance();
 		invoker.setApplicationContext(rpcContext.getApplicationContext());
-
+		// 缓存
 		for (Integer id : idLt) {
 			rpcContext.putDynamicInvoker(id, invoker);
 			LOGGER.info("Cache dynamic invoker of method {}.", id);
