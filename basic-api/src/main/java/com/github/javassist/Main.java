@@ -8,6 +8,4 @@ package com.github.javassist;
  */
 public class Main {
 
-
-
 }
