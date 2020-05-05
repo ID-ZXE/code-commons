@@ -77,8 +77,7 @@ public class ExtensionLoader<T> {
             throw new IllegalArgumentException("Extension type(" + type + ") is not interface!");
         }
         if (!withExtensionAnnotation(type)) {
-            throw new IllegalArgumentException("Extension type(" + type +
-                    ") is not extension, because WITHOUT @" + SPI.class.getSimpleName() + " Annotation!");
+            throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because WITHOUT @" + SPI.class.getSimpleName() + " Annotation!");
         }
 
         ExtensionLoader<T> loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);

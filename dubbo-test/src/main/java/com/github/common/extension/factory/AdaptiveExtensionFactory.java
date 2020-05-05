@@ -1,6 +1,5 @@
 package com.github.common.extension.factory;
 
-
 import com.github.common.extension.Adaptive;
 import com.github.common.extension.ExtensionFactory;
 import com.github.common.extension.ExtensionLoader;
