@@ -19,6 +19,7 @@
         <module>network</module>
         <module>data-structure</module>
         <module>java-ee</module>
+        <module>dubbo-test</module>
     </modules>
 
     <properties>
