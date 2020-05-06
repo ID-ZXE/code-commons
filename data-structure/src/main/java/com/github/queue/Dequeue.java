@@ -2,10 +2,9 @@ package com.github.queue;
 
 /**
  * @author hangs.zhang
- * @date 2020/04/20 00:07
+ * @date 2020/05/07 00:35
  * *****************
  * function:
  */
-public interface Queue {
-
+public class Dequeue {
 }
