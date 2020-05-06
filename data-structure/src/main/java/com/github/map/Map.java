@@ -18,7 +18,7 @@ public interface Map<K, V> {
 
     V get(K k);
 
-    void put(K k, V v);
+    V put(K k, V v);
 
     void putAll(Map<? extends K, ? extends V> m);
 
