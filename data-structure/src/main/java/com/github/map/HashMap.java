@@ -133,7 +133,11 @@ public class HashMap<K, V> implements Map<K, V> {
     public V get(K k) {
         int hash = hash(k);
         int index = indexFor(hash, tables.length);
-        return tables[index].value;
+
+        if (Objects.isNull(tables[index])) return null;
+        Node<K, V> node = getNode(tables[index], k);
+        if (Objects.isNull(node)) return null;
+        return node.getValue();
     }
 
     @Override
@@ -141,13 +145,39 @@ public class HashMap<K, V> implements Map<K, V> {
         int hash = hash(k);
         int index = indexFor(hash, tables.length);
         Node<K, V> oldNode = tables[index];
-        Node<K, V> node = new Node<K, V>(hash, k, v, null);
+        Node<K, V> newNode = new Node<>(hash, k, v, null);
         if (Objects.isNull(tables[index])) {
-            tables[index] = node;
+            tables[index] = newNode;
         } else {
-
+            replaceOrInsert(tables[index], newNode);
         }
         return oldNode == null ? null : oldNode.value;
+    }
+
+    private void replaceOrInsert(Node<K, V> head, Node<K, V> newNode) {
+        if (head == null) throw new RuntimeException();
+        Node<K, V> node = head;
+        Node<K, V> tail = head;
+        while (node != null) {
+            if (node.key.equals(newNode.key)) {
+                head.setValue(newNode.getValue());
+                return;
+            }
+            tail = node;
+            node = node.next;
+        }
+        tail.next = newNode;
+    }
+
+    private Node<K, V> getNode(Node<K, V> head, K k) {
+        Node<K, V> node = head;
+        while (node != null) {
+            if (node.key.equals(k)) {
+                return node;
+            }
+            node = node.next;
+        }
+        return null;
     }
 
     @Override

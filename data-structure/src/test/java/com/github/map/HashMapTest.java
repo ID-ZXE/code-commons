@@ -30,10 +30,16 @@ public class HashMapTest extends TestCase {
     @Test
     public void testPut() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("name", "hangs.zhang");
-        map.put("company", "qunar");
-        LOGGER.info("get name : {}", map.get("name"));
-        LOGGER.info("get company : {}", map.get("company"));
+
+        for (int i = 0; i < 16; i++) {
+            map.put("name" + i, "hangs.zhang" + i);
+            map.put("company" + i, "qunar" + i);
+        }
+
+        for (int i = 0; i < 16; i++) {
+            LOGGER.info("get name : {}", map.get("name" + i));
+            LOGGER.info("get company : {}", map.get("company" + i));
+        }
     }
 
     public void testPutAll() {
