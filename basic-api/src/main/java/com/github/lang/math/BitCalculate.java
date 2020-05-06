@@ -39,4 +39,40 @@ public class BitCalculate {
         LOGGER.info("CAPACITY:{}", CAPACITY);
     }
 
+    @Test
+    public void test2() {
+        System.out.println(2 & (16 - 1));
+        System.out.println(2 % (16));
+
+        System.out.println(3 & (16 - 1));
+        System.out.println(3 % (16));
+
+        System.out.println(15 & (16 - 1));
+        System.out.println(15 % (16));
+
+        System.out.println(19 & (16 - 1));
+        System.out.println(19 % (16));
+    }
+
+    @Test
+    public void test3() {
+        // 8 1000
+        // 9 1001
+        // 16-1 1111
+        // 15-1 1110
+
+        System.out.println(8 & 15 - 1);
+        System.out.println(9 & 15 - 1);
+
+        System.out.println(8 & 16 - 1);
+        System.out.println(9 & 16 - 1);
+    }
+
+    @Test
+    public void test4() {
+        // 确定一个数是否2的次方数
+        int x = 2;
+        System.out.println((x & (x - 1)) == 0);
+    }
+
 }
