@@ -16,11 +16,13 @@ public class HashMap<K, V> implements Map<K, V> {
 
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    transient int size;
+    private transient int size;
 
-    transient int modCount;
+    private transient int modCount;
 
-    final float loadFactor;
+    private final float loadFactor;
+
+    private int threshold;
 
     private Node<K, V>[] tables;
 
@@ -28,9 +30,9 @@ public class HashMap<K, V> implements Map<K, V> {
         this(DEFAULT_INITIAL_CAPACITY);
     }
 
-    public HashMap(int size) {
-        this.tables = new Node[size];
+    public HashMap(int initialCapacity) {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
+        this.tables = new Node[tableSizeFor(initialCapacity)];
     }
 
     static class Node<K, V> implements Entry<K, V> {
@@ -81,7 +83,7 @@ public class HashMap<K, V> implements Map<K, V> {
         public final boolean equals(Object o) {
             if (o == this)
                 return true;
-            if (o instanceof java.util.Map.Entry) {
+            if (o instanceof Map.Entry) {
                 java.util.Map.Entry<?, ?> e = (java.util.Map.Entry<?, ?>) o;
                 return Objects.equals(key, e.getKey()) && Objects.equals(value, e.getValue());
             }
@@ -119,14 +121,27 @@ public class HashMap<K, V> implements Map<K, V> {
         return h & length - 1;
     }
 
+    /**
+     * 大于输入参数且最近的2的整数次幂的数
+     */
+    private int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : n + 1;
+    }
+
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
@@ -147,6 +162,7 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> oldNode = tables[index];
         Node<K, V> newNode = new Node<>(hash, k, v, null);
         if (Objects.isNull(tables[index])) {
+            size++;
             tables[index] = newNode;
         } else {
             replaceOrInsert(tables[index], newNode);
@@ -166,6 +182,7 @@ public class HashMap<K, V> implements Map<K, V> {
             tail = node;
             node = node.next;
         }
+        size++;
         tail.next = newNode;
     }
 
@@ -178,6 +195,10 @@ public class HashMap<K, V> implements Map<K, V> {
             node = node.next;
         }
         return null;
+    }
+
+    private void rehash() {
+
     }
 
     @Override

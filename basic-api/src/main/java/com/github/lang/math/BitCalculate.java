@@ -73,6 +73,22 @@ public class BitCalculate {
         // 确定一个数是否2的次方数
         int x = 2;
         System.out.println((x & (x - 1)) == 0);
+
+        System.out.println(tableSizeFor(15));
+        System.out.println(tableSizeFor(2));
+        System.out.println(tableSizeFor(8));
+        System.out.println(tableSizeFor(9));
+        System.out.println(tableSizeFor(19));
+    }
+
+    public int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : n + 1;
     }
 
 }
