@@ -34,7 +34,7 @@ public interface Map<K, V> {
 
     Set<Entry<K, V>> entrySet();
 
-    V remove(Object key);
+    V remove(K k);
 
     default boolean remove(K key, V value) {
         V curValue = get(key);

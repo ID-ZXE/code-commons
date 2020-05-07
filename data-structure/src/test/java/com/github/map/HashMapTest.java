@@ -17,14 +17,7 @@ public class HashMapTest extends TestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public void testSize() {
-
-    }
-
     public void testIsEmpty() {
-    }
-
-    public void testGet() {
     }
 
     @Test
@@ -35,11 +28,25 @@ public class HashMapTest extends TestCase {
             map.put("name" + i, "hangs.zhang" + i);
             map.put("company" + i, "qunar" + i);
         }
+        LOGGER.info("size:{}", map.size());
 
         for (int i = 0; i < 16; i++) {
-            LOGGER.info("get name : {}", map.get("name" + i));
-            LOGGER.info("get company : {}", map.get("company" + i));
+            // LOGGER.info("get name : {}", map.get("name" + i));
+            // LOGGER.info("get company : {}", map.get("company" + i));
         }
+
+        for (int i = 0; i < 16; i += 2) {
+            map.remove("name" + i);
+            map.remove("company" + i);
+            LOGGER.info("remove name : {}", "name" + i);
+            LOGGER.info("remove company : {}", "company" + i);
+        }
+
+        for (int i = 0; i < 16; i++) {
+            LOGGER.info("get name {} : {}", i, map.get("name" + i));
+            LOGGER.info("get company {} : {}", i, map.get("company" + i));
+        }
+        LOGGER.info("size:{}", map.size());
     }
 
     public void testPutAll() {
@@ -61,8 +68,5 @@ public class HashMapTest extends TestCase {
     }
 
     public void testEntrySet() {
-    }
-
-    public void testRemove() {
     }
 }

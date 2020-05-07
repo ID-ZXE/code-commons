@@ -32,6 +32,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     public HashMap(int initialCapacity) {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
+        this.size = 0;
         this.tables = new Node[tableSizeFor(initialCapacity)];
     }
 
@@ -93,13 +94,15 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * hash 是由键的 hashCode产生。计算余数时，由于n（数组长度）比较小，hash只有低4位参与了计算，高位的计算可以认为是无效的。
-     * 这样导致了计算结果只与低位信息有关，高位数据没发挥作用。为了处理这个缺陷，我们可以上图中的hash高4位数据与低4位数据进行异或运算，
+     * int 32位
+     * ^ 异或
+     * hash 是由键的 hashCode产生。计算余数时，由于n（数组长度）比较小，hash只有低位参与了计算，高位的计算可以认为是无效的。
+     * 这样导致了计算结果只与低位信息有关，高位数据没发挥作用。为了处理这个缺陷，我们可以上图中的hash高16位数据与低16位数据进行异或运算，
      * 即 hash ^ (hash >>> 16) 通过这种方式，让高位数据与低位数据进行异或，以此加大低位信息的随机性，变相的让高位数据参与到计算中。
      */
     private static int hash(Object key) {
         int h;
-        // 高位参与运算
+        // 使得高位参与运算
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
@@ -123,6 +126,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 大于输入参数且最近的2的整数次幂的数
+     * >>> 移位
      */
     private int tableSizeFor(int cap) {
         int n = cap - 1;
@@ -157,33 +161,65 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K k, V v) {
+        ensureCapacity();
         int hash = hash(k);
         int index = indexFor(hash, tables.length);
-        Node<K, V> oldNode = tables[index];
+        Node<K, V> oldNode;
         Node<K, V> newNode = new Node<>(hash, k, v, null);
-        if (Objects.isNull(tables[index])) {
-            size++;
-            tables[index] = newNode;
-        } else {
-            replaceOrInsert(tables[index], newNode);
-        }
+        oldNode = putVal(tables, newNode, index);
+        if (Objects.isNull(oldNode)) size++;
+
         return oldNode == null ? null : oldNode.value;
     }
 
-    private void replaceOrInsert(Node<K, V> head, Node<K, V> newNode) {
+    @Override
+    public V remove(K k) {
+        int hash = hash(k);
+        int index = indexFor(hash, tables.length);
+        Node<K, V> head = tables[index];
+
+        if (Objects.isNull(head)) return null;
+        if (Objects.isNull(head.next)) {
+            size--;
+            tables[index] = null;
+            return head.getValue();
+        }
+
+        Node<K, V> node = head;
+        if (node.key.equals(k)) {
+            tables[index] = node.next;
+            size--;
+            return node.getValue();
+        }
+        Node<K, V> prev = head;
+        while (node != null) {
+            if (node.key.equals(k)) {
+                prev.next = node.next;
+                size--;
+                return node.getValue();
+            }
+            prev = node;
+            node = node.next;
+        }
+        return null;
+    }
+
+    // 尾部插入
+    private Node<K, V> replaceOrInsert(Node<K, V> head, Node<K, V> newNode) {
         if (head == null) throw new RuntimeException();
         Node<K, V> node = head;
         Node<K, V> tail = head;
         while (node != null) {
             if (node.key.equals(newNode.key)) {
-                head.setValue(newNode.getValue());
-                return;
+                Node<K, V> oldNode = new Node<>(node.hash, node.key, node.value, null);
+                node.setValue(newNode.getValue());
+                return oldNode;
             }
             tail = node;
             node = node.next;
         }
-        size++;
         tail.next = newNode;
+        return null;
     }
 
     private Node<K, V> getNode(Node<K, V> head, K k) {
@@ -197,8 +233,28 @@ public class HashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private void rehash() {
+    private void ensureCapacity() {
+        if (size > tables.length * loadFactor) {
+            Node<K, V>[] newTables = new Node[(tables.length << 1)];
+            for (Node<K, V> node : tables) {
+                if (!Objects.isNull(node)) {
+                    while (node != null) {
+                        putVal(newTables, new Node(node.hash, node.key, node.value, null), indexFor(node.hash, newTables.length));
+                        node = node.next;
+                    }
+                }
+            }
+            tables = newTables;
+        }
+    }
 
+    private Node<K, V> putVal(Node[] tables, Node<K, V> node, int index) {
+        if (Objects.isNull(tables[index])) {
+            tables[index] = node;
+            return null;
+        } else {
+            return replaceOrInsert(tables[index], node);
+        }
     }
 
     @Override
@@ -233,11 +289,6 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
-    }
-
-    @Override
-    public V remove(Object key) {
         return null;
     }
 
