@@ -59,8 +59,10 @@ public interface Map<K, V> {
 
         V setValue(V value);
 
+        @Override
         boolean equals(Object o);
 
+        @Override
         int hashCode();
 
     }
