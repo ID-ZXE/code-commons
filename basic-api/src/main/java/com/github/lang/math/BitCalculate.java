@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.LinkedHashMap;
 
 /**
  * @author hangs.zhang
@@ -89,6 +90,15 @@ public class BitCalculate {
         n |= n >>> 8;
         n |= n >>> 16;
         return (n < 0) ? 1 : (n >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : n + 1;
+    }
+
+    @Test
+    public void test5() {
+        System.out.println(1 % 2);
+        System.out.println(1 % 10);
+        System.out.println(2 % 10);
+        System.out.println(8 % 4);
+        System.out.println(5 % 4);
     }
 
 }
