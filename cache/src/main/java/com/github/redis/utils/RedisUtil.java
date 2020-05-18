@@ -1,4 +1,4 @@
-package com.github.redis;
+package com.github.redis.utils;
 
 import com.alibaba.fastjson.JSON;
 import redis.clients.jedis.Jedis;
@@ -44,10 +44,7 @@ public class RedisUtil {
         try {
             jedis = jedisPool.getResource();
             String value = jedis.get(getRealKey(prefix, key));
-            /// log.info("real key = {}", getRealKey(prefix, key));
-            T result = str2Bean(value, clazz);
-            /// log.info("result = {}", result);
-            return result;
+            return str2Bean(value, clazz);
         } finally {
             returnToPoll(jedis);
         }

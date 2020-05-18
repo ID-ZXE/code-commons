@@ -13,19 +13,19 @@ import redis.clients.jedis.JedisPoolConfig;
 public class JedisDemo {
 
     public static void main(String[] args) {
-        Jedis jedis = getJedisConnection();
+        Jedis jedis = getConnection();
         jedis.set("jedis:key", "jedis:value");
-        closeJedisConnection(jedis);
+        closeConnection(jedis);
     }
 
-    private static Jedis getJedisConnection() {
+    private static Jedis getConnection() {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(10);
-        JedisPool pool = new JedisPool(config, "127.0.0.1", 6379, 1000, "redis", false);
+        JedisPool pool = new JedisPool(config, "127.0.0.1", 6379, 1000, "zhanghang", false);
         return pool.getResource();
     }
 
-    private static void closeJedisConnection(Jedis jedis) {
+    private static void closeConnection(Jedis jedis) {
         if (jedis != null) {
             jedis.close();
         }
