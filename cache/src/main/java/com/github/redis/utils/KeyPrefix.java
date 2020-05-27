@@ -1,4 +1,4 @@
-package com.github.redis;
+package com.github.redis.utils;
 
 /**
  * @author hangs.zhang
@@ -12,15 +12,11 @@ public interface KeyPrefix {
 
     /**
      * 过期时间设置
-     *
-     * @return
      */
     int expireSeconds();
 
     /**
      * key的前缀
-     *
-     * @return
      */
     String getPrefix();
 

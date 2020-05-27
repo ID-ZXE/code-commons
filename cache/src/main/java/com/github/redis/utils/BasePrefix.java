@@ -1,4 +1,4 @@
-package com.github.redis;
+package com.github.redis.utils;
 
 /**
  * @author hangs.zhang
@@ -8,9 +8,9 @@ package com.github.redis;
  */
 public abstract class BasePrefix implements KeyPrefix {
 
-    private Integer expireSeconds;
+    private final Integer expireSeconds;
 
-    private String prefix;
+    private final String prefix;
 
     public BasePrefix(String prefix) {
         // 默认0永不过期
