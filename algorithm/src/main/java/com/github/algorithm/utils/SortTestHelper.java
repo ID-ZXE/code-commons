@@ -10,15 +10,22 @@ import java.util.Random;
  */
 public class SortTestHelper {
 
+    public static int[] copyArr(int[] arr) {
+        int[] result = new int[arr.length];
+        System.arraycopy(arr, 0, result, 0, arr.length);
+        return result;
+    }
+
     /**
      * 生成n个随机数,区间在[rangeL,rangeR]
+     *
      * @param n
      * @param rangeL
      * @param rangeR
      * @return
      */
     public static int[] generateRandomArray(int n, int rangeL, int rangeR) {
-        if(rangeL > rangeR) throw new IllegalArgumentException("rangeL > rangeR");
+        if (rangeL > rangeR) throw new IllegalArgumentException("rangeL > rangeR");
 
         int[] arr = new int[n];
         Random random = new Random(System.currentTimeMillis());
