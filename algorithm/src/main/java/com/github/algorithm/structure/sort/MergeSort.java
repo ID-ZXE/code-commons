@@ -11,6 +11,10 @@ import com.github.algorithm.utils.SortTestHelper;
  */
 public class MergeSort {
 
+    /**
+     * O(nlogn)的时间复杂度
+     * 不断的将数组一分为二个相同长度的数组
+     */
     public static void sort(int[] arr) {
         mergeSort(arr, 0, arr.length - 1);
     }

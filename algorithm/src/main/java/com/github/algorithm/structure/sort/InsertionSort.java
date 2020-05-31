@@ -7,7 +7,7 @@ import com.github.algorithm.utils.SortTestHelper;
  * @author hangs.zhang
  * @date 2020/05/27 21:42
  * *****************
- * function:
+ * function: 在近乎有序的情况下, 性能很好
  */
 public class InsertionSort {
 
