@@ -11,7 +11,7 @@ import com.github.algorithm.utils.SortTestHelper;
  */
 public class InsertionSort {
 
-    public static int[] sort(int[] arr) {
+    public static void sort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int e = arr[i];
             int j;
@@ -21,7 +21,6 @@ public class InsertionSort {
             }
             arr[j] = e;
         }
-        return arr;
     }
 
     public static void insertionSort(int[] arr, int left, int right) {
@@ -37,8 +36,9 @@ public class InsertionSort {
     }
 
     public static void main(String[] args) {
-        int[] arr1 = SortTestHelper.generateRandomArray(1000, -100, 1000);
-        PrintUtils.print(sort(arr1));
+        int[] arr = SortTestHelper.generateRandomArray(1000, -100, 1000);
+        sort(arr);
+        PrintUtils.print(arr);
     }
 
 }

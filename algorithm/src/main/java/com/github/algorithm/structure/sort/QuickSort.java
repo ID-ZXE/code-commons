@@ -55,11 +55,9 @@ public class QuickSort {
         if (left >= right) return;
 
         int partition = partition(arr, left, right);
-        if (target == partition) {
-            return;
-        } else if (target > partition) {
+        if (target > partition) {
             quickSort(arr, partition + 1, right);
-        } else {
+        } else if (target < partition) {
             quickSort(arr, left, partition - 1);
         }
     }

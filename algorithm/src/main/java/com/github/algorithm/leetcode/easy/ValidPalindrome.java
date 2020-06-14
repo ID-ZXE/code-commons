@@ -4,9 +4,9 @@ package com.github.algorithm.leetcode.easy;
  * @author hangs.zhang
  * @date 2020/05/26 23:05
  * *****************
- * function:
+ * function: leetcode 125
  */
-public class IsPalindrome2 {
+public class ValidPalindrome {
 
     private static final int[] arrs = new int[256];
 
@@ -46,7 +46,7 @@ public class IsPalindrome2 {
 //        System.out.println(new IsPalindrome2().isPalindrome("A man, a plan, a canal: Panama"));
 //        System.out.println(new IsPalindrome2().isPalindrome("A"));
 //        System.out.println(new IsPalindrome2().isPalindrome(" "));
-        System.out.println(new IsPalindrome2().isPalindrome("0P"));
+        System.out.println(new ValidPalindrome().isPalindrome("0P"));
     }
 
 }
