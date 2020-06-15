@@ -103,6 +103,7 @@ public class JavaTimeTest {
     @Test
     public void localDateTime() {
         String format = "yyyyMMddHHmmss";
+
         // 直接创建
         LocalDateTime dateTime = LocalDateTime.of(2016, 2, 1, 12, 30, 20);
         System.out.println(getTodayByFormat("yyyyMMddHHmmss"));
