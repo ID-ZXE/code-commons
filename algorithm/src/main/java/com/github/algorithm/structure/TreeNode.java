@@ -1,6 +1,8 @@
 package com.github.algorithm.structure;
 
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -79,6 +81,7 @@ public class TreeNode {
         Stack<TreeNode> stack = new Stack<>();
         TreeNode cur = head;
         while (!stack.isEmpty() || cur != null) {
+            // Stack, 左子树后进
             while (cur != null) {
                 stack.push(cur);
                 cur = cur.left;
@@ -87,11 +90,32 @@ public class TreeNode {
             System.out.print(node.value);
             cur = node.right;
         }
+        System.out.println();
+    }
+
+    /**
+     * 分层打印
+     */
+    public static void hierarchyPrint(TreeNode head) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(head);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.value);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
         preOrder(mockTreeNode());
         inOrder(mockTreeNode());
+        hierarchyPrint(mockTreeNode());
     }
 
 }
