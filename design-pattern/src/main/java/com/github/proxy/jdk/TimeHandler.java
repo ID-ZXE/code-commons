@@ -17,7 +17,7 @@ public class TimeHandler implements InvocationHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private Object target;
+    private final Object target;
 
     public TimeHandler(Object target) {
         this.target = target;
