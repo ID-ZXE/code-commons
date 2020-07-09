@@ -29,6 +29,12 @@ public class TreeNode {
         this.value = value;
     }
 
+    /*
+             1
+          1      2
+        4  5   6  7
+             8
+     */
     public static TreeNode mockTreeNode() {
         TreeNode head = new TreeNode(1);
         TreeNode node1 = new TreeNode(2);
@@ -38,12 +44,16 @@ public class TreeNode {
         TreeNode node5 = new TreeNode(6);
         TreeNode node6 = new TreeNode(7);
 
+        TreeNode node7 = new TreeNode(8);
+
         head.left = node1;
         head.right = node2;
         node1.left = node3;
         node1.right = node4;
         node2.left = node5;
         node2.right = node6;
+
+        node6.left = node7;
 
         return head;
     }
@@ -72,7 +82,7 @@ public class TreeNode {
     }
 
     /**
-     * 前序遍历
+     * 中序遍历
      */
     public static void inOrder(TreeNode head) {
         if (Objects.isNull(head)) {
@@ -112,10 +122,44 @@ public class TreeNode {
         System.out.println();
     }
 
+    public static int depth(TreeNode head) {
+        if (head == null) return 0;
+        int leftDepth = depth(head.left);
+        int rightDepth = depth(head.right);
+        return Math.max(leftDepth, rightDepth) + 1;
+    }
+
+    public static int width(TreeNode head) {
+        if (head == null) {
+            return 0;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(head);
+        int width = 0;
+        int curWidth = 1;
+        while (!queue.isEmpty()) {
+            curWidth--;
+            if (curWidth == 0) {
+                width = Math.max(width, queue.size());
+                curWidth = queue.size();
+            }
+            TreeNode node = queue.poll();
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        return width;
+    }
+
     public static void main(String[] args) {
         preOrder(mockTreeNode());
         inOrder(mockTreeNode());
         hierarchyPrint(mockTreeNode());
+        System.out.println(depth(mockTreeNode()));
+        System.out.println(width(mockTreeNode()));
     }
 
 }
