@@ -27,7 +27,6 @@ public class ZigzagLevelOrder {
        15   7
      */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        //储存结果的List
         List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
             return result;
@@ -42,12 +41,10 @@ public class ZigzagLevelOrder {
             //获取目前要遍历的这一层的节点数
             int size = nodeDeque.size();
             result.add(new ArrayList<>());
-
             //奇数层的节点在头部进出列
             for (int i = 0; L % 2 > 0 && i < size; i++) {
                 TreeNode node = nodeDeque.pollFirst();
                 result.get(result.size() - 1).add(node.value);
-
                 //将下一层的非空左节点和右节点在尾部入列
                 if (node.left != null) {
                     nodeDeque.addLast(node.left);
@@ -56,7 +53,6 @@ public class ZigzagLevelOrder {
                     nodeDeque.addLast(node.right);
                 }
             }
-
             //偶数层的节点在尾部进出列
             for (int i = 0; L % 2 == 0 && i < size; i++) {
                 TreeNode node = nodeDeque.pollLast();
@@ -69,8 +65,6 @@ public class ZigzagLevelOrder {
                     nodeDeque.addFirst(node.left);
                 }
             }
-
-            //增加层数
             L++;
         }
         return result;
