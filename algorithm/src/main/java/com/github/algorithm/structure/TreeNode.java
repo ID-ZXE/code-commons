@@ -141,6 +141,7 @@ public class TreeNode {
             curWidth--;
             if (curWidth == 0) {
                 width = Math.max(width, queue.size());
+                // curWid为0时, 下一层的节点以及全部加入到队里中了
                 curWidth = queue.size();
             }
             TreeNode node = queue.poll();
