@@ -104,7 +104,7 @@ public class TreeNode {
     }
 
     /**
-     * 分层打印
+     * 层序遍历
      */
     public static void hierarchyPrint(TreeNode head) {
         Queue<TreeNode> queue = new LinkedList<>();
@@ -120,6 +120,31 @@ public class TreeNode {
             }
         }
         System.out.println();
+    }
+
+    /**
+     * 分层打印
+     */
+    public static void hierarchyPrint2(TreeNode head) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(head);
+        int L = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                System.out.print(node.value);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            L++;
+            System.out.println();
+        }
     }
 
     public static int depth(TreeNode head) {
@@ -156,11 +181,12 @@ public class TreeNode {
     }
 
     public static void main(String[] args) {
-        preOrder(mockTreeNode());
-        inOrder(mockTreeNode());
+//        preOrder(mockTreeNode());
+//        inOrder(mockTreeNode());
         hierarchyPrint(mockTreeNode());
-        System.out.println(depth(mockTreeNode()));
-        System.out.println(width(mockTreeNode()));
+        hierarchyPrint2(mockTreeNode());
+//        System.out.println(depth(mockTreeNode()));
+//        System.out.println(width(mockTreeNode()));
     }
 
 }
