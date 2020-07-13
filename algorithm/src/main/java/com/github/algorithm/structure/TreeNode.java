@@ -128,7 +128,6 @@ public class TreeNode {
     public static void hierarchyPrint2(TreeNode head) {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(head);
-        int L = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
@@ -142,7 +141,6 @@ public class TreeNode {
                     queue.offer(node.right);
                 }
             }
-            L++;
             System.out.println();
         }
     }
