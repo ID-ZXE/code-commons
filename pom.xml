@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>basic-api</module>
+        <module>basic</module>
         <module>queue</module>
         <module>register</module>
         <module>algorithm</module>
