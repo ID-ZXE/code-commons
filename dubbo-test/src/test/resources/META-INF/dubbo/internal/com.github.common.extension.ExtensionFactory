@@ -1,2 +1,0 @@
-adaptive=com.github.common.extension.factory.AdaptiveExtensionFactory
-spi=com.github.common.extension.factory.SpiExtensionFactory
