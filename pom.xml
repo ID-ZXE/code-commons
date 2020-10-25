@@ -18,7 +18,7 @@
         <module>design-pattern</module>
         <module>network</module>
         <module>data-structure</module>
-        <module>java-ee</module>
+        <module>servlet</module>
     </modules>
 
     <properties>
