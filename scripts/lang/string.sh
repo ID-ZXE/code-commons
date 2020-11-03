@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 变量替换
 # ${变量#匹配规则}  从开头开始匹配, 最短删除
 # ${变量##匹配规则} 从开头开始匹配, 最长删除
@@ -6,8 +7,10 @@
 # ${变量/旧字符串/新字符串}   替换旧的为新的, 只替换第一个
 # ${变量//旧字符串/新字符串}  替换新的为旧的, 替换所有
 var='i love you, do you love me'
+# 删除ov开头的数据, 从头开始最短的那个
 var1=${var#*ov}
 echo "${var1}"
+# 删除ov开头的数据, 从头开始最长的那个
 var2=${var##*ov}
 echo "${var2}"
 
@@ -36,3 +39,49 @@ echo "${str:0:5}"
 # echo "${index}"
 # 获取子串
 # expr substr ${str} ${position} ${length}
+
+echo "****************"
+# 需求
+# string="bigdata process framework is Hadoop, Hadoop is an open source project"
+# 1. 打印string长度
+# 2. 删除所有Hadoop
+# 3. 替换第一个Hadoop为MapReduce
+# 4. 替换全部Hadoop为MapReduce
+string="bigdata process framework is Hadoop, Hadoop is an open source project"
+echo 1. "${#string}"
+echo 2. "${string//Hadoop/}"
+echo 3. "${string/Hadoop/}"
+echo 4. "${string//Hadoop/MapReduce}"
+
+echo "****************"
+func main
+{
+    while true; do
+        echo "[string=${string}]"
+        echo
+        read -r -p "Pls input your choice (1|2|3|4|q|Q): " choice
+        case $choice in
+        1)
+            echo 1. "${#string}"
+            ;;
+        2)
+            echo 2. "${string//Hadoop/}"
+            ;;
+        3)
+            echo 3. "${string/Hadoop/}"
+            ;;
+        4)
+            echo 4. "${string//Hadoop/MapReduce}"
+            ;;
+        q | Q)
+            exit
+            ;;
+        *)
+            echo "Error Input"
+            exit
+            ;;
+        esac
+    done
+}
+# zsh不兼容read -p
+# main
