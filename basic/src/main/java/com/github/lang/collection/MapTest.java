@@ -25,7 +25,7 @@ public class MapTest {
         linkedHashMap.get("1");
         linkedHashMap.get("3");
 
-        for (Map.Entry entry : linkedHashMap.entrySet()) {
+        for (Map.Entry<String, String> entry : linkedHashMap.entrySet()) {
             System.out.println(entry.getKey());
         }
     }

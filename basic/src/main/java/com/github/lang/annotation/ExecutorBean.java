@@ -1,4 +1,4 @@
-package com.github.annotation;
+package com.github.lang.annotation;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.github.annotation;
+package com.github.lang.annotation;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +96,7 @@ public final class AnnoManageUtil {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         List<Class<?>> classesList;
-        classesList = AnnoManageUtil.getPackageController("com.github.annotation", Controller.class);
+        classesList = AnnoManageUtil.getPackageController("com.github.lang.annotation", Controller.class);
         Map<String, ExecutorBean> map = new HashMap<>();
         AnnoManageUtil.getRequestMappingMethod(classesList, map);
         map.forEach((k, v) ->
