@@ -33,9 +33,9 @@ public class CustomThreadFactory implements ThreadFactory {
     }
 
     @Override
-    public Thread newThread(Runnable runnable) {
+    public Thread newThread(Runnable task) {
         String name = prefix + mThreadNum.getAndIncrement();
-        Thread ret = new Thread(threadGroup, runnable, name, 0);
+        Thread ret = new Thread(threadGroup, task, name, 0);
         ret.setDaemon(daemoThread);
         return ret;
     }
