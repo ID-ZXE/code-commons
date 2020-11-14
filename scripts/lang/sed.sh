@@ -22,6 +22,8 @@ sed -n -e '/python/p' -e '/PYTHON/p' ../test/sed.txt
 # s命令, 编辑, 使用第三个替换第二个
 # 将行内第一个xxx替换为yyy
 echo "xxx xxx xxx xxx" | sed "s/xxx/yyy/"
+# 或者下面这种写法, 从文件读取, 将第一个xxx替换为yyy, 文件不会保存, 输出到console
+sed "s/xxx/yyy/" ../test/sed.txt
 # 将行内所有xxx替换为yyy
 echo "xxx xxx xxx xxx" | sed "s/xxx/yyy/g"
 # 将第二个xxx替换为yyy
@@ -46,28 +48,32 @@ echo "xxx xxx xxx xxx" | sed "/xxx/a yyy"
 # i命令, 行前追加
 # 在满足xxx的行前, 追加一行yyy
 echo "xxx xxx xxx xxx" | sed "/xxx/i yyy"
-# r命令, 指定文件内容, 行后追加
-echo "xxx xxx xxx xxx" | sed "/xxx/r ../test/sed.txt"
+# r命令, 读取文件追加到指定行后面
+echo "xxx xxx xxx xxx" | sed "/xxx/r /etc/passwd"
 # w命令, 匹配行写入到外部文件(覆盖), 文件可以事先不存在
-# echo "xxx xxx xxx xxx" | sed "/xxx/w ../test/sed.txt"
+echo "xxx xxx xxx xxx" | sed "/xxx/w /tmp/test.txt"
 
 # d命令, 删除
-# 删除第一行
-sed -i '1d' ../test/sed.txt
+# 删除第一行, 且保存在文件中
+sed -i '1d' /etc/passwd
 # 删除匹配xxx的行
 sed -i '/xxx/d' ../test/sed.txt
 
 # p命令, print
 # 打印第二行
-sed -n '2p' ../test/sed.txt
-# 打印第一到第二行
-sed -n '1,2p' ../test/sed.txt
+sed -n '2p' /etc/passwd
+# 打印第三十三行
+sed -n '33p' /etc/passwd
+# 打印第一到第二十行
+sed -n '1,20p' /etc/passwd
 # 打印第一行, 以及之后的一行
-sed -n '1,+1p' ../test/sed.txt
+sed -n '1,+1p' /etc/passwd
 # 打印匹配正则的行
-# 以i开头的行
-sed -n '/^i/p' ../test/sed.txt
+# 以#开头的行
+sed -n '/^#/p' /etc/passwd
 
 # =命令, 显示行号
 # 显示匹配了xxx的行的行号
-sed -n '/xxx/=' ../test/sed.txt
+sed -n '/xxx/=' /etc/passwd
+# 显示匹配了#的行的行号
+sed -n '/#/=' /etc/passwd

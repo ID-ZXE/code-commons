@@ -16,6 +16,8 @@ public class ThreadInterruptTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private static final String THREAD_NAME = "interrupted-thread";
+
     @Test
     public void testInterrupt1() throws InterruptedException {
         Thread thread = new Thread(() -> {
@@ -26,7 +28,7 @@ public class ThreadInterruptTest {
                 // 这里的state会输出为false,thread响应之后会将标志位清零
                 LOGGER.info("i was interrupted, current state {}", Thread.currentThread().isInterrupted());
             }
-        }, "interrupted-thread");
+        }, THREAD_NAME);
         thread.start();
         Thread.sleep(1000L);
         // 中断线程
@@ -46,7 +48,7 @@ public class ThreadInterruptTest {
             }
             // state true 状态发生改变 但是线程并不会因此终止
             LOGGER.info("My State is {}", Thread.currentThread().isInterrupted());
-        }, "interrupted-thread");
+        }, THREAD_NAME);
         thread.start();
         Thread.sleep(5L);
         // 中断
@@ -73,7 +75,7 @@ public class ThreadInterruptTest {
                 }
             }
             LOGGER.info("I`m done with my job");
-        }, "interrupted-thread");
+        }, THREAD_NAME);
         thread.start();
         Thread.sleep(5L);
         // 中断
@@ -94,7 +96,7 @@ public class ThreadInterruptTest {
                 }
             }
             LOGGER.info("I`m done with my job");
-        }, "interrupted-thread");
+        }, THREAD_NAME);
         thread.start();
         Thread.sleep(5L);
         // 中断
