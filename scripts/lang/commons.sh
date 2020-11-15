@@ -28,3 +28,6 @@ protect_nginx() {
   locale process_num=$(ps -ef | grep 'nginx' | grep -v 'grep' | wc -l)
   echo "${process_num} nginx is running"
 }
+
+echo "hello world"
+echo -e "hello \nworld"
