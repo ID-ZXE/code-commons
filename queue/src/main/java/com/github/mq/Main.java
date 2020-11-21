@@ -12,11 +12,11 @@ import java.lang.invoke.MethodHandles;
  * function:
  */
 public class Main {
-
+	
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
+    
     public static void main(String[] args) {
         LOGGER.info("test info log");
     }
-
+    
 }
