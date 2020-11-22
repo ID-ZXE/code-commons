@@ -2,7 +2,6 @@ APP_NAME='spring-boot-web-app'
 
 CATALINA_HOME=${HOME}/app/${APP_NAME}
 LOG_DIR=${CATALINA_HOME}/logs
-TMP_DIR=/tmp
 DATE=$(date '+%Y%m%d')
 OPERATION=''
 
@@ -46,7 +45,9 @@ start() {
 	PID=$(ps -ef | grep 'java -jar ${APP_NAME}' | awk '{print $2}')
 	# 获取到的PID不为空
 	if [[ -n ${PID} ]]; then
-		nohup java -jar ${JAVA_OPTS} ${APP_NAME}.jar -Dlogs.dir=${LOG_DIR} -Dtmp.dir=${TMP_DIR} >>/tmp/${APP_NAME}_${DATE}.out 2>&1 &
+		# -D参数需要放在jar之前
+		# springboot的application.properties的参数还可以通过--param=value的方式动态注入
+		nohup java -jar ${JAVA_OPTS} -Dserver.tomcat.basedir=${CATALINA_HOME} -Dlogs.dir=${LOG_DIR} ${APP_NAME}.jar >>${LOG_DIR}/catalina.out 2>&1 &
 	else
 		echo 'application ${APP_NAME} has started'
 		return 1
