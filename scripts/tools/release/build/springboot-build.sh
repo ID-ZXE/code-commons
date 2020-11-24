@@ -39,8 +39,7 @@ parse_args() {
 			MAVEN_MODULE=${OPTARG}
 			;;
 		?)
-			echo "参数错误"
-			exit 1
+			usage
 			;;
 		esac
 	done
@@ -58,6 +57,16 @@ init() {
 
 	CODE_DIR=${HOME}/ci/code/${APP_NAME}
 	BUILD_RESULT_DIR=${HOME}/ci/build_result/${APP_NAME}
+}
+
+usage() {
+	echo "Usage:"
+	echo "    springboot-build.sh [-m maven_module] ... [-h]"
+	echo "Description:"
+	echo "    maven_module - xxx, default: dev"
+	echo "    server_name - the server host name, default: $(hostname)"
+	echo "    -h - show this help"
+	exit 1
 }
 
 get_code() {
