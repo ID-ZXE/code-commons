@@ -9,16 +9,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>basic</module>
-        <module>queue</module>
-        <module>register</module>
+        <module>api</module>
         <module>algorithm</module>
-        <module>data</module>
-        <module>cache</module>
-        <module>design-pattern</module>
         <module>network</module>
         <module>data-structure</module>
-        <module>servlet</module>
+        <module>distributed</module>
     </modules>
 
     <properties>
