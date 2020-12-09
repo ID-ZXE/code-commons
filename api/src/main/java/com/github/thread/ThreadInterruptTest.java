@@ -25,7 +25,7 @@ public class ThreadInterruptTest {
                 Thread.sleep(2000L);
             } catch (InterruptedException e) {
                 // 通过InterruptedException异常响应中断
-                // 这里的state会输出为false,thread响应之后会将标志位清零
+                // 这里的state会输出为false,因为thread响应之后会将标志位清零
                 LOGGER.info("i was interrupted, current state {}", Thread.currentThread().isInterrupted());
             }
         }, THREAD_NAME);
@@ -62,10 +62,10 @@ public class ThreadInterruptTest {
             long start = System.currentTimeMillis();
             boolean interrupt = false;
             while ((System.currentTimeMillis() - start) < 10L) {
-                // Thread.interrupted()获取标识位,并且将标识位修改
+                // Thread.interrupted()获取标识位,清除标志位状态
                 boolean interrupted = Thread.interrupted();
                 if (interrupted) {
-                    LOGGER.info("线程中断,但是不响应这个中断,当前标志位:{}", interrupted);
+                    LOGGER.info("线程中断,但是不响应这个中断,当前标志位:{}", Thread.currentThread().isInterrupted());
                     interrupt = true;
                 } else if (interrupt) {
                     LOGGER.info("线程被中断一次, 但是线程并未停止");

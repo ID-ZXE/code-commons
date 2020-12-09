@@ -15,13 +15,13 @@ echo ${#var_arr[1]}
 # 数组长度
 echo ${#var_arr}
 # 打印全部
-echo ${var_arr[@]}
+echo "${var_arr[@]}"
 # 切片访问
-echo ${var_arr[@]:1:2}
+echo "${var_arr[@]:1:2}"
 echo ${#var_arr}
 # 清除元素,mac上语法不支持
 # unset var_arr[1]
 # echo "clear index ${var_arr[1]}"
 # 清除数组
 unset var_arr
-echo "clear arr ${var_arr[@]}"
+echo "clear arr " "${var_arr[@]}"

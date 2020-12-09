@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.concurrent.locks.Condition;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,34 +19,40 @@ public class LockTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private final ReentrantLock lock = new ReentrantLock();
+
     @Test
-    public void testNewCondition() {
-        ReentrantLock lock = new ReentrantLock();
-        Condition condition1 = lock.newCondition();
-        Condition condition2 = lock.newCondition();
-        LOGGER.info("isEquals{}", condition1 == condition2);
+    public void foobar() {
+        // lock方法放在try语句块之外
+        lock.lock();
+        try {
+            LOGGER.info("业务逻辑");
+            // 业务逻辑
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Test
-    public void lockSupport() throws InterruptedException {
-        Thread thread = new Thread(() -> {
-            LOGGER.info("i`m start");
-            LOGGER.info("interrupt state:{}", Thread.currentThread().isInterrupted());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                // sleep清除中断标志位,但是不会更改_counter
-                LOGGER.info("interrupt state:{}", Thread.currentThread().isInterrupted());
+    public void foobar2() {
+        if (lock.tryLock()) {
+            LOGGER.info("获取锁失败");
+        } else {
+            lock.unlock();
+        }
+
+        try {
+            int timeout = 1000;
+            if (!lock.tryLock(timeout, TimeUnit.MILLISECONDS)) {
+                LOGGER.info("获取锁超时");
+            } else {
+                lock.unlock();
             }
-            LOGGER.info("i`m work");
-            LockSupport.park();
-            LOGGER.info("interrupt state:{}", Thread.currentThread().isInterrupted());
-            LOGGER.info("i`m end");
-        }, "lockSupport");
-        thread.start();
-        thread.interrupt();
-        Thread.sleep(1000);
-        LOGGER.info("thread end");
+        } catch (InterruptedException e) {
+            // 响应InterruptedException异常会清除中断的标志位
+            LOGGER.error("响应中断", e);
+        }
+
     }
 
 }

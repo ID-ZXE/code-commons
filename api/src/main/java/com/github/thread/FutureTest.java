@@ -1,5 +1,9 @@
 package com.github.thread;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.*;
 
 /**
@@ -10,8 +14,10 @@ import java.util.concurrent.*;
  */
 public class FutureTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<String> future = executorService.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -20,6 +26,7 @@ public class FutureTest {
             }
         });
         String result = future.get();
-        System.out.println(result);
+        LOGGER.info("result:{}", result);
     }
+
 }
