@@ -3,6 +3,7 @@ package com.github.thread;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
 
 /**
@@ -27,6 +28,9 @@ public class CustomThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable task) {
+        if (Objects.isNull(task)) {
+            throw new RuntimeException();
+        }
         return threadFactory.newThread(task);
     }
 
