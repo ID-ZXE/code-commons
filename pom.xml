@@ -10,7 +10,7 @@
 
     <modules>
         <module>api</module>
-        <module>algorithm</module>
+        <module>leetcode</module>
         <module>network</module>
         <module>data-structure</module>
         <module>distributed</module>
