@@ -1,5 +1,6 @@
 package com.github.thread;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,9 @@ public class FutureTest {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<String> future = executorService.submit(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                Thread.sleep(1000);
-                return "result";
-            }
+        Future<String> future = executorService.submit(() -> {
+            Thread.sleep(1000);
+            return "result";
         });
         String result = future.get();
         LOGGER.info("result:{}", result);

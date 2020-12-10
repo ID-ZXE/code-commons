@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -22,7 +21,7 @@ public class LockTest {
     private final ReentrantLock lock = new ReentrantLock();
 
     @Test
-    public void foobar() {
+    public void testReentrantLock() {
         // lock方法放在try语句块之外
         lock.lock();
         try {
@@ -33,8 +32,12 @@ public class LockTest {
         }
     }
 
+    /**
+     * 尝试获取锁, 获取不到则返回false
+     * 尝试获取锁, 超时获取不到则返回false
+     */
     @Test
-    public void foobar2() {
+    public void testReentrantLock2() {
         if (lock.tryLock()) {
             LOGGER.info("获取锁失败");
         } else {
@@ -53,6 +56,31 @@ public class LockTest {
             LOGGER.error("响应中断", e);
         }
 
+    }
+
+    /**
+     * 以可以响应中断的方式获取锁
+     */
+    @Test
+    public void testReentrantLock3() throws InterruptedException {
+        Thread thread = new Thread(() -> {
+            try {
+                lock.lockInterruptibly();
+                try {
+                    LOGGER.info("业务逻辑");
+                    long start = System.currentTimeMillis();
+                    while ((System.currentTimeMillis() - start) < 10L) {
+                    }
+                } finally {
+                    lock.unlock();
+                }
+            } catch (InterruptedException e) {
+                LOGGER.info("响应中断");
+            }
+        });
+        thread.start();
+        thread.interrupt();
+        Thread.sleep(20L);
     }
 
 }

@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +25,7 @@ public class ThreadPoolExecutorTest {
     public void test() throws InterruptedException {
         ArrayBlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<>(300);
         // 策略选择为抛出RejectException
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 200, 10, TimeUnit.MINUTES, blockingQueue, new CustomThreadFactory("test"),
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 200, 10, TimeUnit.MINUTES, blockingQueue, new CustomThreadFactory("test", true),
                 new ThreadPoolExecutor.AbortPolicy());
         // 动态设置线程池的参数
         executor.setCorePoolSize(200);

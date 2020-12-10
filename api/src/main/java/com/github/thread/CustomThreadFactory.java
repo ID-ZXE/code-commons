@@ -1,43 +1,33 @@
 package com.github.thread;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author hangs.zhang
  * @date 2020/05/02 22:06
  * *****************
- * function:
+ * function: 自定义线程工厂
  */
 public class CustomThreadFactory implements ThreadFactory {
 
-    private final AtomicInteger mThreadNum = new AtomicInteger(1);
+    private final ThreadFactory threadFactory;
 
-    private final String prefix;
+    public CustomThreadFactory(String prefix, boolean daemon) {
+        ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
+        this.threadFactory = threadFactoryBuilder
+                .setDaemon(daemon)
+                .setNameFormat(StringUtils.isNotEmpty(prefix) ? prefix + "-thread-%d" : "")
+                .setPriority(10)
+                .build();
 
-    private final boolean daemoThread;
-
-    private final ThreadGroup threadGroup;
-
-    public CustomThreadFactory(String prefix) {
-        this(prefix, false);
-    }
-
-    public CustomThreadFactory(String prefix, boolean daemo) {
-        this.prefix = StringUtils.isNotEmpty(prefix) ? prefix + "-thread-" : "";
-        daemoThread = daemo;
-        SecurityManager s = System.getSecurityManager();
-        threadGroup = (s == null) ? Thread.currentThread().getThreadGroup() : s.getThreadGroup();
     }
 
     @Override
     public Thread newThread(Runnable task) {
-        String name = prefix + mThreadNum.getAndIncrement();
-        Thread ret = new Thread(threadGroup, task, name, 0);
-        ret.setDaemon(daemoThread);
-        return ret;
+        return threadFactory.newThread(task);
     }
 
 }

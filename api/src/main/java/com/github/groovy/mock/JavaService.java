@@ -1,5 +1,8 @@
 package com.github.groovy.mock;
 
+/**
+ * @author plum-wine
+ */
 public class JavaService {
 
     public void echo() {

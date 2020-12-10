@@ -6,6 +6,7 @@ package com.github.lang;
  * *****************
  * function:
  */
+@SuppressWarnings("all")
 public class StringIntern {
 
     public static void main(String[] args) {
