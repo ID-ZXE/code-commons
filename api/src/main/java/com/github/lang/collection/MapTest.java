@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * @author hangs.zhang
@@ -21,16 +21,29 @@ public class MapTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private Executor executor = Executors.newCachedThreadPool();
+
     @Test
     public void testHashMap() {
-        Map<Integer, Integer> map = new HashMap<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        // 支持null key
         map.put(null, 1);
-        map.put(null, 2);
         LOGGER.info("null key`value:{}", map.get(null));
     }
 
     @Test
-    public void testLinkedHashMap() {
+    public void testTreeMap() {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(1, 1);
+        map.put(3, 3);
+        map.put(2, 2);
+        // 迭代是按照顺序输出
+        map.get(1);
+        map.forEach((k, v) -> LOGGER.info("key:{}", k));
+    }
+
+    @Test
+    public void testLinkedHashMap() throws InterruptedException {
         LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>(16, 0.75f, true);
         linkedHashMap.put("1", "1");
         linkedHashMap.put("2", "1");
@@ -41,8 +54,25 @@ public class MapTest {
         linkedHashMap.get("1");
         linkedHashMap.get("3");
 
-        for (Map.Entry<String, String> entry : linkedHashMap.entrySet()) {
-            LOGGER.info("key:{}", entry.getKey());
+        // LinkedHashMap在遍历的时候, 如果外部发了get操作, 也会发生ConcurrentModificationException
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(300L);
+                } catch (InterruptedException e) {
+                    // do nothing
+                }
+                linkedHashMap.get("1");
+            }
+        });
+        try {
+            for (Map.Entry<String, String> entry : linkedHashMap.entrySet()) {
+                Thread.sleep(150L);
+                LOGGER.info("key:{}", entry.getKey());
+            }
+        } catch (ConcurrentModificationException e) {
+            LOGGER.info("发生ConcurrentModificationException");
         }
     }
 

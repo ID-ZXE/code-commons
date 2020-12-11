@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * *****************
  * function:
  */
-public class JavaAssistMain {
+public class JavaassistTest {
 
     public static void main(String[] args) throws Exception {
         ClassPool classPool = ClassPool.getDefault();

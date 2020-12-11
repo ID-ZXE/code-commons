@@ -12,7 +12,7 @@ import java.lang.invoke.MethodHandles;
  * *****************
  * function:
  */
-public class QueueMain {
+public class QueueTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -20,7 +20,7 @@ public class QueueMain {
      * 测试put阻塞
      */
     @Test
-    public void arrayBlockingQueue1() throws InterruptedException {
+    public void testArrayBlockingQueue() throws InterruptedException {
         ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(3);
         queue.put("a");
         queue.put("b");
@@ -31,7 +31,7 @@ public class QueueMain {
                 String data = queue.take();
                 LOGGER.info("取出data:{}", data);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // do nothing
             }
         }).start();
         LOGGER.info("开始插入第三个元素");
@@ -43,7 +43,7 @@ public class QueueMain {
      * 测试take阻塞
      */
     @Test
-    public void arrayBlockingQueue2() throws InterruptedException {
+    public void testArrayBlockingQueue2() throws InterruptedException {
         ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(3);
         new Thread(() -> {
             try {
@@ -52,7 +52,7 @@ public class QueueMain {
                     LOGGER.info("取出data:{}", data);
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // do nothing
             }
         }).start();
         Thread.sleep(1000);

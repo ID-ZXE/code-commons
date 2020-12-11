@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * *****************
  * function:
  */
-public class ProcessMan {
+public class ProcessTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

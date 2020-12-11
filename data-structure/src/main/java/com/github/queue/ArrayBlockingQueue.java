@@ -12,11 +12,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ArrayBlockingQueue<E> extends LinkedList<E> {
 
-    ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
-    private final Condition notFull;
+    private final transient Condition notFull;
 
-    private final Condition notEmpty;
+    private final transient Condition notEmpty;
 
     private final int capacity;
 
@@ -25,7 +25,6 @@ public class ArrayBlockingQueue<E> extends LinkedList<E> {
         this.notEmpty = lock.newCondition();
         this.capacity = capacity;
     }
-
 
     public void put(E e) throws InterruptedException {
         lock.lockInterruptibly();
