@@ -23,6 +23,7 @@ public class FutureTest {
             Thread.sleep(1000);
             return "result";
         });
+
         String result = future.get();
         LOGGER.info("result:{}", result);
     }

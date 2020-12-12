@@ -1,6 +1,5 @@
 package com.github.nio.buffer;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**

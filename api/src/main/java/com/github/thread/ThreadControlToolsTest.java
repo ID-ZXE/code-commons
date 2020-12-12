@@ -71,6 +71,8 @@ public class ThreadControlToolsTest {
      * <p>
      * CyclicBarrier的对象是一个一个的线程
      * CountDownLatch则是一个又一个的事件
+     * <p>
+     * 还可以利用CountDownLatch去实现压测
      */
     @Test
     public void testCyclicBarrier() throws InterruptedException {

@@ -6,17 +6,16 @@
 # -F 显示定义过的所有函数名称
 # -x 将变量声明为环境变量
 
-declare -r var_only_read="data"
-echo ${var_only_read}
-# var_only_read="data2"
+declare -r "var_only_read"="data"
+echo "${var_only_read}"
 
-declare -i var_int=100
-echo ${var_int}
-# var_int=200
+declare -i "var_int"=100
+var_int=200
+echo "${var_int}"
 
 test() {
   echo "test"
 }
 
-declare -f
-declare -F
+# declare -f
+# declare -F
