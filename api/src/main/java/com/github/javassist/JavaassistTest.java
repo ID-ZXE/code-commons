@@ -1,7 +1,10 @@
 package com.github.javassist;
 
 import javassist.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 
 /**
@@ -10,11 +13,14 @@ import java.lang.reflect.Method;
  * *****************
  * function:
  */
+@SuppressWarnings("all")
 public class JavaassistTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public static void main(String[] args) throws Exception {
         ClassPool classPool = ClassPool.getDefault();
-        CtClass ctClass = classPool.get("com.github.bases.javassist.Main");
+        CtClass ctClass = classPool.get("com.github.javassist.Template");
 
         ctClass.addField(CtField.make("private String name;\n", ctClass));
         ctClass.addMethod(CtMethod.make("public void setName(java.lang.String name){this.name = name;}\n", ctClass));
@@ -25,7 +31,7 @@ public class JavaassistTest {
         setName.invoke(obj, "hangs.zhang");
         Method getName = clazz.getMethod("getName");
         String name = (String) getName.invoke(obj);
-        System.out.println(name);
+        LOGGER.info("name : {}", name);
     }
 
 }

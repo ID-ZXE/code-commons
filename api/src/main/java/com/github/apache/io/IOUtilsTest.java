@@ -1,4 +1,4 @@
-package com.github.apache.commons.io;
+package com.github.apache.io;
 
 import org.apache.commons.io.*;
 import org.junit.Test;
@@ -13,10 +13,13 @@ import java.util.List;
  * @author hangs.zhang
  * @date 2020/04/10 23:36
  * *****************
- * function: apache-commons-io包
- * IOUtils FileUtils FilenameUtils
+ * function:
+ * apache-commons-io包
+ * 1. IOUtils
+ * 2. FileUtils
+ * 3. FilenameUtils
  */
-public class CommonsIOTest {
+public class IOUtilsTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
