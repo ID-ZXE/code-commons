@@ -24,6 +24,41 @@ public class MapTest {
     private Executor executor = Executors.newCachedThreadPool();
 
     @Test
+    public void tableSizeFor() {
+        int cap = 10;
+
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        LOGGER.info("cap:{}", (n + 1));
+    }
+
+    /**
+     * resize时 确定低位与高位的原理
+     */
+    @Test
+    public void testHashHiLo() {
+        int hashA = ("a".hashCode() >> 16) ^ "a".hashCode();
+        System.out.println("hash a " + hashA);
+        System.out.println("hash a " + Integer.toBinaryString(hashA));
+        int hashB = ("b".hashCode() >> 16) ^ "b".hashCode();
+        System.out.println("hash b " + hashB);
+        System.out.println("hash b " + Integer.toBinaryString(hashB));
+        int oldCap = 16;
+        System.out.println("oldCap - 1 " + Integer.toBinaryString(oldCap));
+        System.out.println("oldCap     " + Integer.toBinaryString(oldCap - 1));
+        int newCap = 32;
+        System.out.println(hashA & (oldCap - 1));
+        System.out.println(hashA & oldCap);
+
+        System.out.println(hashB & (oldCap - 1));
+        System.out.println(hashB & oldCap);
+    }
+
+    @Test
     public void testHashMap() {
         HashMap<Integer, Integer> map = new HashMap<>();
         // 支持null key
