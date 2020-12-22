@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
  * *****************
  * function:
  */
+@SuppressWarnings("all")
 public class MethodSign {
 
     public static void main(String[] args) throws Exception {

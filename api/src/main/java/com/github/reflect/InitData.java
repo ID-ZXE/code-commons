@@ -20,6 +20,7 @@ import java.util.jar.JarFile;
  * @author hangs.zhang
  * 初始化文件数据的工具
  */
+@SuppressWarnings("all")
 public class InitData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
