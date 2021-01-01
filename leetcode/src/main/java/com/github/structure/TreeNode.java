@@ -17,16 +17,16 @@ public class TreeNode {
 
     public TreeNode right;
 
-    public int value;
+    public int val;
 
-    public TreeNode(int value) {
-        this.value = value;
+    public TreeNode(int val) {
+        this.val = val;
     }
 
-    public TreeNode(TreeNode left, TreeNode right, int value) {
+    public TreeNode(TreeNode left, TreeNode right, int val) {
         this.left = left;
         this.right = right;
-        this.value = value;
+        this.val = val;
     }
 
     /*
@@ -69,7 +69,7 @@ public class TreeNode {
         stack.push(head);
         while (!stack.isEmpty()) {
             TreeNode node = stack.pop();
-            System.out.print(node.value);
+            System.out.print(node.val);
             if (!Objects.isNull(node.right)) {
                 stack.push(node.right);
             }
@@ -97,7 +97,7 @@ public class TreeNode {
                 cur = cur.left;
             }
             TreeNode node = stack.pop();
-            System.out.print(node.value);
+            System.out.print(node.val);
             cur = node.right;
         }
         System.out.println();
@@ -111,7 +111,7 @@ public class TreeNode {
         queue.offer(head);
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
-            System.out.print(node.value);
+            System.out.print(node.val);
             if (node.left != null) {
                 queue.offer(node.left);
             }
@@ -132,7 +132,7 @@ public class TreeNode {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
-                System.out.print(node.value);
+                System.out.print(node.val);
                 if (node.left != null) {
                     queue.offer(node.left);
                 }

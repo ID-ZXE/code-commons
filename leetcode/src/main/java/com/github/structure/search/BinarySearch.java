@@ -1,8 +1,5 @@
 package com.github.structure.search;
 
-import java.util.LinkedList;
-import java.util.Stack;
-
 /**
  * @author hangs.zhang
  * @date 2020/05/17 22:16
@@ -39,38 +36,3 @@ public class BinarySearch {
     }
 
 }
-
-class CQueue {
-
-    private Stack<Integer> stack1;
-    private Stack<Integer> stack2;
-
-    public CQueue() {
-        stack1 = new Stack<Integer>();
-        stack2 = new Stack<Integer>();
-    }
-
-    public void appendTail(int value) {
-        stack1.push(value);
-    }
-
-    public int deleteHead() {
-        if(stack1.isEmpty() && stack2.isEmpty()) {
-            return -1;
-        } else if (!stack2.isEmpty()) {
-            return stack2.pop();
-        } else {
-            while(!stack1.isEmpty()) {
-                stack2.push(stack1.pop());
-            }
-        }
-        return stack2.pop();
-    }
-}
-
-/**
- * Your CQueue object will be instantiated and called as such:
- * CQueue obj = new CQueue();
- * obj.appendTail(value);
- * int param_2 = obj.deleteHead();
- */
