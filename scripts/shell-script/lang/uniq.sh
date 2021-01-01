@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../../tools/statistics/beauty
+source ../../tools/statistics/beauty.sh
 
 # 处理时只能处理相近的两条重复行
 # 一般使用时配合sort使用

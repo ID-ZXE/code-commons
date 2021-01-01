@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ../../tools/statistics/beauty
+source ../../tools/statistics/beauty.sh
 
 wrap='\n'
 text='str'${wrap}'str'${wrap}' str'${wrap}'abc'${wrap}'str'
