@@ -1,4 +1,4 @@
-package com.github.guava.io;
+package com.github.guava;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.LineProcessor;
@@ -6,6 +6,7 @@ import com.google.common.io.Resources;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author hangs.zhang
@@ -17,9 +18,6 @@ public class ResourceUtil {
 
     /**
      * 获取URL
-     *
-     * @param path
-     * @return
      */
     public static URL getResource(String path) {
         return Thread.currentThread().getContextClassLoader().getResource(path);
@@ -27,12 +25,11 @@ public class ResourceUtil {
 
     /**
      * 遍历文件的每一行数据
-     *
-     * @param resource
      */
+    @SuppressWarnings("all")
     public static void readLine(URL resource) {
         try {
-            Resources.readLines(resource, Charsets.UTF_8, new LineProcessor<Object>() {
+            Resources.readLines(resource, StandardCharsets.UTF_8, new LineProcessor<Object>() {
                 @Override
                 public boolean processLine(String line) throws IOException {
                     System.out.println(line);

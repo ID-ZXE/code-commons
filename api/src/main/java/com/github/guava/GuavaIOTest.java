@@ -1,4 +1,4 @@
-package com.github.guava.io;
+package com.github.guava;
 
 import org.junit.Test;
 

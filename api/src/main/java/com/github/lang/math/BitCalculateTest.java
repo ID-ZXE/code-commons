@@ -31,10 +31,10 @@ public class BitCalculateTest {
     public void test2() {
         List<Integer> nums = Lists.newArrayList(-8, -1, 1, 2, 3, 4, 8, 16, 32, 64);
         nums.forEach(num -> {
-            LOGGER.info("{} >> 1, result:{}", num, num >> 1);
-            LOGGER.info("{} >> 2, result:{}", num, num >> 2);
+            LOGGER.info("{} >>  1, result:{}", num, num >> 1);
+            LOGGER.info("{} >>  2, result:{}", num, num >> 2);
             // 无符号右移, 高位补0
-            LOGGER.info("{} >>> 2, result:{}", num, num >>> 2);
+            LOGGER.info("{} >>> 2, result:{}", num, num >>> 1);
         });
     }
 
