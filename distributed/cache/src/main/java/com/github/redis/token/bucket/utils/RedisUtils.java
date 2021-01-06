@@ -1,4 +1,4 @@
-package com.github.redis.utils;
+package com.github.redis.token.bucket.utils;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -15,7 +15,7 @@ import java.lang.invoke.MethodHandles;
  * *****************
  * function:
  */
-public final class RedisLettuceUtils {
+public final class RedisUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -25,7 +25,7 @@ public final class RedisLettuceUtils {
 
     private static final StatefulRedisConnection<String, String> REDIS_CONNECTION = REDIS_CLIENT.connect();
 
-    private RedisLettuceUtils() {
+    private RedisUtils() {
     }
 
     public static void set(String key, String value) {
@@ -39,19 +39,8 @@ public final class RedisLettuceUtils {
         return sync.get(key);
     }
 
-    public static void watch(String key) {
-        RedisCommands<String, String> sync = REDIS_CONNECTION.sync();
-        sync.watch(key);
-    }
-
-    public static void exec(String key) {
-        RedisCommands<String, String> sync = REDIS_CONNECTION.sync();
-        sync.exec();
-    }
-
     public static void main(String[] args) {
         set("test-key", "test-value");
-
     }
 
 }
