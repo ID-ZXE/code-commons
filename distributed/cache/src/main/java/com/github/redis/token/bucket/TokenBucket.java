@@ -1,6 +1,7 @@
 package com.github.redis.token.bucket;
 
 import com.github.redis.token.bucket.utils.JsonUtils;
+import com.github.redis.token.bucket.utils.RedisUtils;
 import io.lettuce.core.TransactionResult;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -43,31 +44,25 @@ public class TokenBucket {
      */
     private long nextFreeTicketMicros = 0L;
 
-    private final transient String tokenBucketUniqMark;
-
-    private final transient StatefulRedisConnection<String, String> redisConnection;
+    private final String tokenBucketUniqMark;
 
     private static final String REDIS_KEY = "TOKEN_BUCKET-%s";
 
-    private static final ThreadLocal<RedisCommands<String, String>> COMMANDS_THREAD_LOCAL = new ThreadLocal<>();
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public TokenBucket(int maxPermits, int stableIntervalMicros, String tokenBucketUniqMark,
-                       StatefulRedisConnection<String, String> connection) {
+    public TokenBucket(int maxPermits, int stableIntervalMicros, String tokenBucketUniqMark) {
         this.maxPermits = maxPermits;
         this.stableIntervalMicros = stableIntervalMicros;
         this.tokenBucketUniqMark = tokenBucketUniqMark;
-        this.redisConnection = connection;
         this.nextFreeTicketMicros = System.currentTimeMillis();
 
-        RedisCommands<String, String> command = redisConnection.sync();
-        COMMANDS_THREAD_LOCAL.set(command);
-        store();
+        StatefulRedisConnection<String, String> connection = RedisUtils.getConnection();
+        store(RedisUtils.getConnection());
+        connection.close();
     }
 
-    private void resync(long nowMicros) {
-        load();
+    private void resync(long nowMicros, StatefulRedisConnection<String, String> connection) {
+        load(connection);
         if (nowMicros > nextFreeTicketMicros) {
             int newPermits = (int) (nowMicros - nextFreeTicketMicros) / stableIntervalMicros;
             newPermits = newPermits * maxPermits;
@@ -77,14 +72,15 @@ public class TokenBucket {
         }
     }
 
-    private void store() {
+    public void store(StatefulRedisConnection<String, String> connection) {
         TokenBucketData tokenBucketData = new TokenBucketData(storedPermits, maxPermits, stableIntervalMicros, nextFreeTicketMicros);
-        RedisCommands<String, String> command = COMMANDS_THREAD_LOCAL.get();
+        RedisCommands<String, String> command = connection.sync();
         command.set(getTokenBucketKey(), JsonUtils.toJson(tokenBucketData));
     }
 
-    private void load() {
-        RedisCommands<String, String> command = COMMANDS_THREAD_LOCAL.get();
+    public void load(StatefulRedisConnection<String, String> connection) {
+        RedisCommands<String, String> command = connection.sync();
+        command.get(getTokenBucketKey());
         TokenBucketData tokenBucketData = JsonUtils.fromJson(command.get(getTokenBucketKey()), TokenBucketData.class);
         tokenBucketData.copyProperties(this);
     }
@@ -94,14 +90,16 @@ public class TokenBucket {
     }
 
     public boolean tryAcquire(int permit) {
-        RedisCommands<String, String> command = COMMANDS_THREAD_LOCAL.get();
+        StatefulRedisConnection<String, String> connection = RedisUtils.getConnection();
+        RedisCommands<String, String> command = connection.sync();
+
         // redis 自带的cas
         while (true) {
             LOGGER.info("tryAcquire");
             command.watch(getTokenBucketKey());
             command.multi();
-            if (!doAcquire(permit)) {
-                COMMANDS_THREAD_LOCAL.remove();
+            if (!doAcquire(permit, connection)) {
+                connection.close();
                 return false;
             }
 
@@ -109,19 +107,19 @@ public class TokenBucket {
             Object result = transactionResult.get(0);
             LOGGER.info("result:{}", result);
             if (Objects.equals(result.toString(), "OK")) {
-                COMMANDS_THREAD_LOCAL.remove();
+                connection.close();
                 return true;
             }
         }
     }
 
-    public boolean doAcquire(int permit) {
-        resync(System.currentTimeMillis());
+    public boolean doAcquire(int permit, StatefulRedisConnection<String, String> connection) {
+        resync(System.currentTimeMillis(), connection);
         int storedPermitsToSpend = Math.min(permit, this.storedPermits);
         int freshPermits = permit - storedPermitsToSpend;
         if (freshPermits < 0) return false;
         this.storedPermits -= storedPermitsToSpend;
-        store();
+        store(connection);
         return true;
     }
 
@@ -137,6 +135,9 @@ public class TokenBucket {
             tokenBucket.nextFreeTicketMicros = nextFreeTicketMicros;
             tokenBucket.storedPermits = storedPermits;
             tokenBucket.stableIntervalMicros = stableIntervalMicros;
+        }
+
+        public TokenBucketData() {
         }
 
         public TokenBucketData(int storedPermits, int maxPermits, int stableIntervalMicros, long nextFreeTicketMicros) {

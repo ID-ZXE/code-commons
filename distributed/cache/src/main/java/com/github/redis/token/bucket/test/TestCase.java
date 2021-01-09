@@ -1,8 +1,9 @@
 package com.github.redis.token.bucket.test;
 
 import com.github.redis.token.bucket.TokenBucket;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
+import com.github.redis.token.bucket.utils.RedisUtils;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,37 +25,21 @@ public class TestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public TokenBucket build() {
-        RedisURI redisURI = RedisURI.builder().withHost("127.0.0.1").withPassword("zhanghang").withPort(6379).build();
-        RedisClient redisClient = RedisClient.create(redisURI);
-        return new TokenBucket(10, 1000, "FIRST", redisClient.connect());
+        return new TokenBucket(10, 1000, "FIRST");
     }
 
     @Test
-    public void tryAcquire() throws InterruptedException {
+    public void tryAcquire() {
         TokenBucket tokenBucket = build();
-        // 预热
-        Thread.sleep(1000);
-        tokenBucket.tryAcquire(1);
+        StatefulRedisConnection<String, String> connection = RedisUtils.getConnection();
 
-//        for (int i = 0; i < 5; i++) {
-//            executors.submit(() -> {
-//                for (int num = 1; num < 10; num++) {
-//                    if (tokenBucket.tryAcquire(1)) {
-//                        LOGGER.info("acquire permit 1");
-//                        // 业务处理
-//                        try {
-//                            Thread.sleep(100);
-//                        } catch (InterruptedException e) {
-//                            // do nothing
-//                        }
-//                    } else {
-//                        LOGGER.info("can`t acquire permit 1");
-//                    }
-//                }
-//            });
-//        }
-//
-//        Thread.sleep(10000);
+        RedisCommands<String, String> command = connection.sync();
+        command.multi();
+        command.watch("TOKEN_BUCKET-FIRST");
+        tokenBucket.store(connection);
+        tokenBucket.load(connection);
+        command.exec();
+        LOGGER.info("nextFreeTicketMicros {}", tokenBucket.getNextFreeTicketMicros());
     }
 
 }
