@@ -1,4 +1,4 @@
-package com.github.redis.token.bucket.utils;
+package com.github.redis.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;

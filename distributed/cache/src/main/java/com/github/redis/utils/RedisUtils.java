@@ -1,7 +1,9 @@
-package com.github.redis.token.bucket.utils;
+package com.github.redis.utils;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.ScriptOutputType;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Objects;
 
 /**
  * @author zhanghang
@@ -21,9 +24,11 @@ import java.lang.invoke.MethodHandles;
 @SuppressWarnings("all")
 public final class RedisUtils {
 
+    private static final String OK = "OK";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private static final RedisURI REDIS_URI = RedisURI.builder().withHost("127.0.0.1").withPassword("redis").withPort(6379).build();
+    private static final RedisURI REDIS_URI = RedisURI.builder().withHost("127.0.0.1").withPassword("zhanghang").withPort(6379).build();
 
     private static final RedisClient REDIS_CLIENT = RedisClient.create(REDIS_URI);
 
@@ -32,7 +37,6 @@ public final class RedisUtils {
     private static final StatefulRedisConnection<String, String> REDIS_CONNECTION = REDIS_CLIENT.connect();
 
     private RedisUtils() {
-
     }
 
     static {
@@ -55,10 +59,26 @@ public final class RedisUtils {
         connection.close();
     }
 
+    public static long decr(String key) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        return command.decr(key);
+    }
+
+    public static long incr(String key) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        return command.incr(key);
+    }
+
     public static void set(String key, String value) {
         RedisCommands<String, String> sync = REDIS_CONNECTION.sync();
-        String result = sync.set(key, value);
-        LOGGER.trace("result:{}", result);
+        sync.set(key, value);
+    }
+
+    public static boolean setNx(String key, String value, int secondTimeout) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        SetArgs args = SetArgs.Builder.nx().ex(secondTimeout);
+        String result = command.set(key, value, args);
+        return Objects.equals(result, OK);
     }
 
     public static String get(String key) {
@@ -66,8 +86,19 @@ public final class RedisUtils {
         return sync.get(key);
     }
 
-    public static void main(String[] args) {
-        set("test-key", "test-value");
+    public static void loadScript(String script) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        command.scriptLoad(script);
+    }
+
+    public static Long eval(String script, String[] keys, String[] args, ScriptOutputType scriptOutputType) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        return command.eval(script, scriptOutputType, keys, args);
+    }
+
+    public static void lpush(String key, String... value) {
+        RedisCommands<String, String> command = REDIS_CONNECTION.sync();
+        command.lpush(key, new String[]{});
     }
 
 }

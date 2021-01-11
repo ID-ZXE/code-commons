@@ -1,4 +1,4 @@
-package com.github.redis.utils;
+package com.github.redis.jedis;
 
 /**
  * @author hangs.zhang

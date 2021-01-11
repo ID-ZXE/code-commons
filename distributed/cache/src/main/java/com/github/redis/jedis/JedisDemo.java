@@ -1,4 +1,4 @@
-package com.github.redis;
+package com.github.redis.jedis;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

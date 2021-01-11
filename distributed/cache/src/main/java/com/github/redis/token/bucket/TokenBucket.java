@@ -1,7 +1,7 @@
 package com.github.redis.token.bucket;
 
-import com.github.redis.token.bucket.utils.JsonUtils;
-import com.github.redis.token.bucket.utils.RedisUtils;
+import com.github.redis.utils.JsonUtils;
+import com.github.redis.utils.RedisUtils;
 import io.lettuce.core.TransactionResult;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;

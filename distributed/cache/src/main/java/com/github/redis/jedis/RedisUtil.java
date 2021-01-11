@@ -1,4 +1,4 @@
-package com.github.redis.utils;
+package com.github.redis.jedis;
 
 import com.alibaba.fastjson.JSON;
 import redis.clients.jedis.Jedis;
