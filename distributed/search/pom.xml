@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>distributed</artifactId>
+        <groupId>com.github</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>search</artifactId>
+
+    <dependencies>
+        <!-- 官方低级别es客户端, 使用http协议与es集群通信, 与所有es版本兼容. -->
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch.client</groupId>-->
+<!--            <artifactId>elasticsearch-rest-client</artifactId>-->
+<!--            <version>6.5.0</version>-->
+<!--        </dependency>-->
+
+        <!-- 用于Elasticsearch的官方高级客户端, 它是基于低级客户端的, 它提供很多API, 并负责请求的编排与响应的反编排. -->
+        <!-- 包含elasticsearch-rest-client与elasticsearch的依赖 -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.5.0</version>
+        </dependency>
+
+        <!-- 在 Elasticsearch 7.0 中不建议使用TransportClient -->
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch.client</groupId>-->
+<!--            <artifactId>transport</artifactId>-->
+<!--            <version>6.5.0</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch</groupId>-->
+<!--            <artifactId>elasticsearch</artifactId>-->
+<!--            <version>6.5.0</version>-->
+<!--        </dependency>-->
+    </dependencies>
+
+</project>
