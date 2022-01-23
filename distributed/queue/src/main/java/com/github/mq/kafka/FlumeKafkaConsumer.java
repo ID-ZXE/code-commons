@@ -4,9 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.common.TopicPartition;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -24,6 +28,8 @@ public class FlumeKafkaConsumer {
         // 订阅主题
         kafkaConsumer.subscribe(Collections.singletonList("task.log"));
 
+        Map offsets = new HashMap<>();
+
         // 轮训
         try {
             while (true) {
@@ -32,9 +38,11 @@ public class FlumeKafkaConsumer {
                 for (ConsumerRecord<String, String> record : records) {
                     log.info("topic:{}, partition:{}, offset:{}, key:{}, value:{}",
                             record.topic(), record.partition(), record.offset(), record.key(), record.value());
-
-                    kafkaConsumer.commitSync();
+                    // 手动设置offset
+                    offsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1);
+                    kafkaConsumer.commitSync(offsets);
                 }
+                kafkaConsumer.commitSync();
             }
         } finally {
             kafkaConsumer.close();

@@ -10,11 +10,11 @@ import java.util.Properties;
  */
 public class KafkaCommon {
 
-    private static final String BOOT_STARP_SERVERS = "middleware-server-1:9092";
+    private static final String BOOT_STRAP_SERVERS = "middleware-server-1:9092";
 
     public static Properties createConsumerProperties(String groupName) {
         Properties config = new Properties();
-        config.put("bootstrap.servers", BOOT_STARP_SERVERS);
+        config.put("bootstrap.servers", BOOT_STRAP_SERVERS);
         // 消费者群组
         config.put("group.id", groupName);
         config.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -24,9 +24,9 @@ public class KafkaCommon {
         return config;
     }
 
-    public static Properties createPriducerProperties() {
+    public static Properties createProducerProperties() {
         Properties config = new Properties();
-        config.put("bootstrap.servers", BOOT_STARP_SERVERS);
+        config.put("bootstrap.servers", BOOT_STRAP_SERVERS);
         config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         return config;

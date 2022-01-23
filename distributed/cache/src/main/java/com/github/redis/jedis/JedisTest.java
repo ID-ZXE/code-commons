@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * *****************
  * function:
  */
-public class JedisDemo {
+public class JedisTest {
 
     public static void main(String[] args) {
         Jedis jedis = getConnection();

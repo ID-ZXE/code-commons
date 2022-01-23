@@ -17,8 +17,8 @@ public class KafkaProducerTest {
 
     public static void main(String[] args) throws InterruptedException {
         // 生成producer
-        Properties config = KafkaCommon.createPriducerProperties();
-        KafkaProducer<String, String> kafkaProducer = new KafkaProducer<String, String>(config);
+        Properties config = KafkaCommon.createProducerProperties();
+        KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(config);
 
         // 创建消息
         ProducerRecord<String, String> record = new ProducerRecord<>("test", "key", "this is message");
