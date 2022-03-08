@@ -13,13 +13,13 @@ import java.util.Scanner;
  * *****************
  * function:
  */
-public class Client {
+public class NIOClient {
 
     public static void main(String[] args) {
         ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-        ByteBuffer wirteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
         try (Scanner scanner = new Scanner(System.in)) {
-            SocketChannel channel = null;
+            SocketChannel channel;
             channel = SocketChannel.open();
             channel.connect(new InetSocketAddress("localhost", 8888));
             while (true) {
@@ -27,10 +27,10 @@ public class Client {
                 String str = scanner.nextLine();
                 if (Objects.equals(str, "bye")) break;
 
-                wirteBuffer.clear();
-                wirteBuffer.put(str.getBytes());
-                wirteBuffer.flip();
-                channel.write(wirteBuffer);
+                writeBuffer.clear();
+                writeBuffer.put(str.getBytes());
+                writeBuffer.flip();
+                channel.write(writeBuffer);
                 readBuffer.clear();
                 int read = channel.read(readBuffer);
                 if (read == -1) {

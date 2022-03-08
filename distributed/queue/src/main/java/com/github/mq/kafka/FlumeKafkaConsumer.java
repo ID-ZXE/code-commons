@@ -28,7 +28,7 @@ public class FlumeKafkaConsumer {
         // 订阅主题
         kafkaConsumer.subscribe(Collections.singletonList("task.log"));
 
-        Map offsets = new HashMap<>();
+        Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
 
         // 轮训
         try {
@@ -39,7 +39,7 @@ public class FlumeKafkaConsumer {
                     log.info("topic:{}, partition:{}, offset:{}, key:{}, value:{}",
                             record.topic(), record.partition(), record.offset(), record.key(), record.value());
                     // 手动设置offset
-                    offsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1);
+                    offsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1));
                     kafkaConsumer.commitSync(offsets);
                 }
                 kafkaConsumer.commitSync();
