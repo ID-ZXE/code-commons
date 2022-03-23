@@ -12,7 +12,9 @@ import lombok.Data;
 public class Node {
 
     private String name;
+
     private String host;
+
     private Integer port;
 
     public Node(String name, String host, int port) {
