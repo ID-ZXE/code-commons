@@ -16,7 +16,6 @@
         <module>register</module>
         <module>cache</module>
         <module>queue</module>
-        <module>s</module>
         <module>search</module>
     </modules>
 
